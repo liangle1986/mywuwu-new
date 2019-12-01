@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lianglele All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the ywuwu.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lianglele (liangle1986@126.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mywuwu.pigx.shop.mapper.CategoryMapper">
+
+	<resultMap id="nideshopCategoryMap" type="com.mywuwu.pigx.shop.entity.Category">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="keywords" column="keywords"/>
+		<result property="frontDesc" column="front_desc"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="sortOrder" column="sort_order"/>
+		<result property="showIndex" column="show_index"/>
+		<result property="isShow" column="is_show"/>
+		<result property="bannerUrl" column="banner_url"/>
+		<result property="iconUrl" column="icon_url"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="wapBannerUrl" column="wap_banner_url"/>
+		<result property="level" column="level"/>
+		<result property="type" column="type"/>
+		<result property="frontName" column="front_name"/>
+	</resultMap>
+	<sql id="BaseColumnMap">
+		id,name,keywords,front_desc,parent_id,sort_order,show_index,is_show,banner_url,icon_url,img_url,wap_banner_url,level,type,front_name
+
+	</sql>
+
+	<!--根据条件查询分类-->
+	<select id="queryList" resultType="com.mywuwu.pigx.shop.entity.Category">
+		select
+		<include refid="BaseColumnMap"/>
+		from category
+
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="category.name != null">
+				and category.name like concat('%',#{category.name},'%')
+			</if>
+			<if test="category.type != null">
+				and category.type = #{category.type}
+			</if>
+			<if test="category.level != null">
+				and category.level = #{category.level}
+			</if>
+			<if test="category.parentId != null">
+				and category.parent_id = #{category.parentId}
+			</if>
+
+		</trim>
+	</select>
+</mapper>

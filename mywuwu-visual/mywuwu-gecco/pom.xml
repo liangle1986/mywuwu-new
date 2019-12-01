@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!--继承mywuwu-visual-->
+	<parent>
+		<groupId>com.mywuwu</groupId>
+		<artifactId>mywuwu-visual</artifactId>
+		<version>3.2</version>
+	</parent>
+	<artifactId>gecco</artifactId>
+s	<name>gecco</name>
+	<description>Demo project for Spring Boot</description>
+	<packaging>jar</packaging>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<!--注册中心客户端-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+		<!--配置中心客户端-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<!--数据操作-->
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-data</artifactId>
+		</dependency>
+		<!--mybatis-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!-- druid 连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+		</dependency>
+		<!--common-->
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-core</artifactId>
+		</dependency>
+		<!--swagger-->
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-swagger</artifactId>
+		</dependency>
+		<!--安全模块-->
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-log</artifactId>
+		</dependency>
+		<!--web 模块-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!--undertow容器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+
+		<!--gecco与spring结合 1.2.9版本开始支持spring-boot-->
+		<dependency>
+			<groupId>com.geccocrawler</groupId>
+			<artifactId>gecco</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/antlr/antlr -->
+		<dependency>
+			<groupId>antlr</groupId>
+			<artifactId>antlr</artifactId>
+			<version>2.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mozilla.intl</groupId>
+			<artifactId>chardet</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/chardet-1.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>jargs</groupId>
+			<artifactId>jargs</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/jargs-1.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>lennart</groupId>
+			<artifactId>cpdetector</artifactId>
+			<version>1.0.10</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/cpdetector-1.0.10.jar</systemPath>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

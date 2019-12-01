@@ -1,0 +1,61 @@
+/*
+ *
+ *      Copyright (c) 2018-2025, lianglele All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice,
+ *  this list of conditions and the following disclaimer.
+ *  Redistributions in binary form must reproduce the above copyright
+ *  notice, this list of conditions and the following disclaimer in the
+ *  documentation and/or other materials provided with the distribution.
+ *  Neither the name of the ywuwu.com developer nor the names of its
+ *  contributors may be used to endorse or promote products derived from
+ *  this software without specific prior written permission.
+ *  Author: lianglele (liangle1986@126.com)
+ *
+ */
+
+package com.mywuwu.pigx.admin.api.feign;
+
+import com.mywuwu.pigx.admin.api.entity.WxUser;
+import com.mywuwu.pigx.common.core.constant.ServiceNameConstants;
+import com.mywuwu.pigx.common.core.util.R;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.*;
+
+
+/**
+ * @author lianglele
+ * @date 2018/6/22
+ */
+@FeignClient(contextId = "remoteWxUserService", value = ServiceNameConstants.SHOP_SERVICE)
+public interface RemoteWxUserService {
+	/**
+	 * 通过用户名查询用户
+	 *
+	 * @param openId 公开标示
+	 * @return R
+	 */
+	@GetMapping("/user/info/{openId}")
+	WxUser info(@PathVariable("openId") String openId);
+
+	/**
+	 * 创建用户
+	 *
+	 * @param wxUser 用户信息
+	 * @return
+	 */
+	@PostMapping("/user")
+	R save(@RequestBody WxUser wxUser);
+
+	/**
+	 * 修改用户
+	 *
+	 * @param wxUser 用户信息
+	 * @return
+	 */
+	@PutMapping("/user")
+	R update(@RequestBody WxUser wxUser);
+}

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lianglele All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the ywuwu.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lianglele (liangle1986@126.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mywuwu.pigx.shop.mapper.GoodsMapper">
+
+	<resultMap id="nideshopGoodsMap" type="com.mywuwu.pigx.shop.entity.Goods">
+		<id property="id" column="id"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="goodsSn" column="goods_sn"/>
+		<result property="name" column="name"/>
+		<result property="brandId" column="brand_id"/>
+		<result property="goodsNumber" column="goods_number"/>
+		<result property="keywords" column="keywords"/>
+		<result property="goodsBrief" column="goods_brief"/>
+		<result property="goodsDesc" column="goods_desc"/>
+		<result property="isOnSale" column="is_on_sale"/>
+		<result property="addTime" column="add_time"/>
+		<result property="sortOrder" column="sort_order"/>
+		<result property="isDelete" column="is_delete"/>
+		<result property="attributeCategory" column="attribute_category"/>
+		<result property="counterPrice" column="counter_price"/>
+		<result property="extraPrice" column="extra_price"/>
+		<result property="isNew" column="is_new"/>
+		<result property="goodsUnit" column="goods_unit"/>
+		<result property="primaryPicUrl" column="primary_pic_url"/>
+		<result property="listPicUrl" column="list_pic_url"/>
+		<result property="retailPrice" column="retail_price"/>
+		<result property="sellVolume" column="sell_volume"/>
+		<result property="primaryProductId" column="primary_product_id"/>
+		<result property="unitPrice" column="unit_price"/>
+		<result property="promotionDesc" column="promotion_desc"/>
+		<result property="promotionTag" column="promotion_tag"/>
+		<result property="appExclusivePrice" column="app_exclusive_price"/>
+		<result property="isAppExclusive" column="is_app_exclusive"/>
+		<result property="isLimited" column="is_limited"/>
+		<result property="isHot" column="is_hot"/>
+		<result property="marketPrice" column="market_price"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="updateUserId" column="update_user_id"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="createUserDeptId" column="create_user_dept_id"/>
+	</resultMap>
+
+	<select id="queryList" resultType="com.mywuwu.pigx.shop.entity.Goods">
+		select
+		goods.id,
+		goods.category_id,
+		goods.goods_sn,
+		goods.name,
+		goods.brand_id,
+		goods.goods_number,
+		goods.keywords,
+		goods.goods_brief,
+		goods.goods_desc,
+		goods.is_on_sale,
+		goods.add_time,
+		goods.update_time,
+		goods.sort_order,
+		goods.is_delete,
+		goods.attribute_category,
+		goods.counter_price,
+		goods.extra_price,
+		goods.is_new,
+		goods.goods_unit,
+		goods.primary_pic_url,
+		goods.list_pic_url,
+		goods.retail_price,
+		goods.sell_volume,
+		goods.primary_product_id,
+		goods.unit_price,
+		goods.promotion_desc,
+		goods.promotion_tag,
+		goods.app_exclusive_price,
+		goods.is_app_exclusive,
+		goods.is_limited,
+		goods.is_hot,
+		goods.market_price,
+		goods.create_user_id,
+		goods.create_user_dept_id,
+		goods.update_user_id
+		-- category.name category_name,
+		-- attribute_category.name attribute_category_name,
+		-- brand.name brand_name
+		from goods
+		LEFT JOIN category
+		ON goods.category_id = category.id
+		LEFT JOIN attribute_category ON goods.attribute_category = attribute_category.id
+		LEFT JOIN brand ON brand.id = goods.brand_id
+
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="goodsDto.name != null">
+				and goods.name like concat('%',#{goodsDto.name},'%')
+			</if>
+			<if test="goodsDto.isHot != null">
+				and goods.is_hot = #{goodsDto.isHot}
+			</if>
+			<if test="goodsDto.isNew != null">
+				and goods.is_new = #{goodsDto.isNew}
+			</if>
+			<if test="goodsDto.categoryId != null">
+			and category.parent_id =  #{goodsDto.categoryId}
+			</if>
+			<choose>
+				<when test="goodsDto.order != null and goodsDto.order != ''">
+					order by goods.${goodsDto.orderField} ${goodsDto.order}
+				</when>
+				<otherwise>
+					order by goods.id asc
+				</otherwise>
+			</choose>
+		</trim>
+	</select>
+</mapper>

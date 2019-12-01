@@ -1,0 +1,9 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.mywuwu.pigx.common.data.cache.RedisTemplateConfig,\
+    com.mywuwu.pigx.common.data.cache.RedisCacheManagerConfig,\
+    com.mywuwu.pigx.common.data.cache.RedisCacheAutoConfiguration,\
+    com.mywuwu.pigx.common.data.tenant.PigxTenantConfigProperties,\
+    com.mywuwu.pigx.common.data.tenant.TenantContextHolderFilter,\
+    com.mywuwu.pigx.common.data.tenant.PigxFeignTenantConfiguration,\
+    com.mywuwu.pigx.common.data.mybatis.MybatisPlusConfig,\
+    com.mywuwu.pigx.common.data.resolver.WebMvcConfig

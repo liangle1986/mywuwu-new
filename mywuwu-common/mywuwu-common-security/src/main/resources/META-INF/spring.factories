@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.mywuwu.pigx.common.security.component.GlobalExceptionHandlerResolver,\
+  com.mywuwu.pigx.common.security.component.PigxTokenEnhancer,\
+  com.mywuwu.pigx.common.security.service.PigxUserDetailsServiceImpl

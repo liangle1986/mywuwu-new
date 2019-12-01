@@ -1,0 +1,168 @@
+# 使用说明 V3.4.0
+# 1. 使用docker-compose  宿主机不需要配置host来发现
+# 2. 无需修改源码，根目录  docker-compose up 即可
+# 3. 静静等待服务启动
+
+version: '2'
+services:
+  mywuwu-mysql:
+    build:
+      context: ./
+      dockerfile: ./db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: mywuwu-mysql
+    image: mywuwu-mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mywuwu-mysql:/var/lib/mysql
+    command: --lower_case_table_names=1
+
+  mywuwu-zookeeper:
+    image: zookeeper:3.4.13
+    restart: always
+
+  mywuwu-xxl:
+    image: pig4cloud/xxl-job-admin:2.1.0
+    restart: always
+    environment:
+      - PARAMS="--xxl.admin.login=false"
+    ports:
+      - 9080:9080
+
+  mywuwu-redis:
+    image: redis:5.0.4
+    restart: always
+    container_name: mywuwu-redis
+    ports:
+      - 6379:6379
+
+  mywuwu-minio:
+    image: minio/minio
+    command: server /data
+    ports:
+      - 9000:9000
+    volumes:
+      - ./data:/data
+      - ./config:/root/.minio
+    environment:
+      - MINIO_DOMAIN=mywuwu-minio
+      - MINIO_ACCESS_KEY=lianglele
+      - MINIO_SECRET_KEY=lianglele
+
+  mywuwu-register:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-register/Dockerfile
+    restart: always
+    container_name: mywuwu-register
+    image: mywuwu-register
+    ports:
+      - 8848:8848
+
+  mywuwu-gateway:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-gateway/Dockerfile
+    restart: always
+    container_name: mywuwu-gateway
+    image: mywuwu-gateway
+    ports:
+      - 9999:9999
+
+  mywuwu-auth:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-auth/Dockerfile
+    restart: always
+    container_name: mywuwu-auth
+    image: mywuwu-auth
+
+  mywuwu-upms:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-upms/mywuwu-upms-biz/Dockerfile
+    restart: always
+    container_name: mywuwu-upms
+    image: mywuwu-upms
+
+  mywuwu-monitor:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-monitor/Dockerfile
+    restart: always
+    image: mywuwu-monitor
+    container_name: mywuwu-monitor
+    ports:
+      - 5001:5001
+
+  mywuwu-daemon-quartz:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-daemon-quartz/Dockerfile
+    restart: always
+    image: mywuwu-daemon-quartz
+    container_name: mywuwu-daemon-quartz
+
+  mywuwu-daemon-elastic-job:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-daemon-elastic-job/Dockerfile
+    restart: always
+    image: mywuwu-daemon-elastic-job
+    container_name: mywuwu-daemon-elastic-job
+
+  mywuwu-codegen:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-codegen/Dockerfile
+    restart: always
+    image: mywuwu-codegen
+    container_name: mywuwu-codegen
+
+  mywuwu-mp-platform:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-mp-platform/Dockerfile
+    restart: always
+    image: mywuwu-mp-platform
+    container_name: mywuwu-mp-platform
+
+  mywuwu-pay-platform:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-pay-platform/Dockerfile
+    restart: always
+    image: mywuwu-pay-platform
+    container_name: mywuwu-pay-platform
+
+  mywuwu-oa-platform:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-oa-platform/Dockerfile
+    restart: always
+    image: mywuwu-oa-platform
+    container_name: mywuwu-oa-platform
+
+  mywuwu-tx-manager:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-tx-manager/Dockerfile
+    restart: always
+    image: mywuwu-tx-manager
+    container_name: mywuwu-tx-manager
+    ports:
+      - 5004:5004
+      - 9998:9998
+
+  mywuwu-sentinel:
+    build:
+      context: ./
+      dockerfile: ./mywuwu-visual/mywuwu-sentinel-dashboard/Dockerfile
+    restart: always
+    image: mywuwu-sentinel
+    container_name: mywuwu-sentinel
+    ports:
+      - 5020:5020

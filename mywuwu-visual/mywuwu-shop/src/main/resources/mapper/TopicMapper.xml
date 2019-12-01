@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lianglele All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the ywuwu.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lianglele (liangle1986@126.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mywuwu.pigx.shop.mapper.TopicMapper">
+
+	<resultMap id="nideshopTopicCategoryMap" type="com.mywuwu.pigx.shop.entity.Topic">
+		<id property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="avatar" column="avatar"/>
+		<result property="itemPicUrl" column="item_pic_url"/>
+		<result property="subtitle" column="subtitle"/>
+		<result property="topicCategoryId" column="topic_category_id"/>
+		<result property="priceInfo" column="price_info"/>
+		<result property="readCount" column="read_count"/>
+		<result property="scenePicUrl" column="scene_pic_url"/>
+		<result property="topicTemplateId" column="topic_template_id"/>
+		<result property="topicTagId" column="topic_tag_id"/>
+	</resultMap>
+
+	<!--分页查询-->
+	<select id="queryPageList" resultType="com.mywuwu.pigx.shop.entity.Topic">
+		select
+		`id`,
+		`title`,
+		`content`,
+		`avatar`,
+		`item_pic_url`,
+		`subtitle`,
+		`topic_category_id`,
+		`price_info`,
+		`read_count`,
+		`scene_pic_url`,
+		`topic_template_id`,
+		`topic_tag_id`
+		from topic
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="topic.title != null and topic.title.trim() != ''">
+				AND title LIKE concat('%',#{topic.title},'%')
+			</if>
+		</trim>
+	</select>
+</mapper>
