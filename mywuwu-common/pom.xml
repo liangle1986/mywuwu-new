@@ -30,7 +30,7 @@
 	<artifactId>mywuwu-common</artifactId>
 	<packaging>pom</packaging>
 
-	<description>pigx 公共聚合模块</description>
+	<description>mywuwu 公共聚合模块</description>
 
 	<modules>
 		<module>mywuwu-common-bom</module>
@@ -46,5 +46,6 @@
 		<module>mywuwu-common-sequence</module>
 		<module>mywuwu-common-swagger</module>
 		<module>mywuwu-common-transaction</module>
+		<module>mywuwu-common-aliyun</module>
 	</modules>
 </project>

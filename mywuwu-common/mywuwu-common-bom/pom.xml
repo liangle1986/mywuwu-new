@@ -64,6 +64,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.mywuwu</groupId>
+				<artifactId>mywuwu-common-aliyun</artifactId>
+				<version>${mywuwu.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mywuwu</groupId>
 				<artifactId>mywuwu-common-security</artifactId>
 				<version>${mywuwu.version}</version>
 			</dependency>

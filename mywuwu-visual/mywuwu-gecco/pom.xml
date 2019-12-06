@@ -6,10 +6,10 @@
 	<parent>
 		<groupId>com.mywuwu</groupId>
 		<artifactId>mywuwu-visual</artifactId>
-		<version>3.2</version>
+		<version>3.5.0</version>
 	</parent>
 	<artifactId>gecco</artifactId>
-s	<name>gecco</name>
+	<name>gecco</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>jar</packaging>
 	<properties>
@@ -17,53 +17,69 @@ s	<name>gecco</name>
 	</properties>
 
 	<dependencies>
-		<!--注册中心客户端-->
+		<!--upms api、model 模块-->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-upms-api</artifactId>
 		</dependency>
-		<!--配置中心客户端-->
+		<!--日志处理-->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-log</artifactId>
 		</dependency>
-		<!--数据操作-->
 		<dependency>
 			<groupId>com.mywuwu</groupId>
 			<artifactId>mywuwu-common-data</artifactId>
-		</dependency>
-		<!--mybatis-->
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<!-- druid 连接池 -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-		</dependency>
-		<!--common-->
-		<dependency>
-			<groupId>com.mywuwu</groupId>
-			<artifactId>mywuwu-common-core</artifactId>
 		</dependency>
 		<!--swagger-->
 		<dependency>
 			<groupId>com.mywuwu</groupId>
 			<artifactId>mywuwu-common-swagger</artifactId>
 		</dependency>
-		<!--安全模块-->
+		<!--文件系统-->
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-minio</artifactId>
+		</dependency>
+		<!--注册中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+		<!--配置中心客户端-->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<!--spring security 、oauth、jwt依赖-->
 		<dependency>
 			<groupId>com.mywuwu</groupId>
 			<artifactId>mywuwu-common-security</artifactId>
 		</dependency>
+		<!--支持动态路由配置 -->
 		<dependency>
 			<groupId>com.mywuwu</groupId>
-			<artifactId>mywuwu-common-log</artifactId>
+			<artifactId>mywuwu-common-gateway</artifactId>
+		</dependency>
+		<!--sentinel 依赖-->
+		<dependency>
+			<groupId>com.mywuwu</groupId>
+			<artifactId>mywuwu-common-sentinel</artifactId>
+		</dependency>
+		<!--mybatis-->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+		</dependency>
+		<!-- druid 连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+		</dependency>
+		<!--数据库-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<!--web 模块-->
 		<dependency>
@@ -75,7 +91,6 @@ s	<name>gecco</name>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
-
 		<!--gecco与spring结合 1.2.9版本开始支持spring-boot-->
 		<dependency>
 			<groupId>com.geccocrawler</groupId>
@@ -114,12 +129,40 @@ s	<name>gecco</name>
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.mywuwu.gecco.GeccoApplication</mainClass>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-lib-src-webapps</id>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${project.parent.parent.build.directory}">
+									<fileset dir="${project.build.directory}">
+										<include name="*.jar"/>
+									</fileset>
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

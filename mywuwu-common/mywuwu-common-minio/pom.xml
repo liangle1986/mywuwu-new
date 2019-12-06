@@ -12,7 +12,7 @@
 	<artifactId>mywuwu-common-minio</artifactId>
 	<packaging>jar</packaging>
 
-	<description>pigx 文件系统依赖</description>
+	<description>mywuwu 文件系统依赖</description>
 
 	<dependencies>
 		<dependency>

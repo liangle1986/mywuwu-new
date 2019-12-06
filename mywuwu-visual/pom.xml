@@ -43,5 +43,6 @@
 		<module>mywuwu-sentinel-dashboard</module>
 		<module>mywuwu-tx-manager</module>
 		<module>mywuwu-shop</module>
+		<module>mywuwu-gecco</module>
 	</modules>
 </project>

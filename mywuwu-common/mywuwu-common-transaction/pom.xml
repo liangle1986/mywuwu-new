@@ -11,7 +11,7 @@
 	<artifactId>mywuwu-common-transaction</artifactId>
 	<packaging>jar</packaging>
 
-	<description>pigx lcn transaction</description>
+	<description>mywuwu lcn transaction</description>
 
 	<dependencies>
 		<dependency>

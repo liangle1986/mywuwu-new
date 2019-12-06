@@ -30,7 +30,7 @@
 	<artifactId>mywuwu-common-job</artifactId>
 	<packaging>jar</packaging>
 
-	<description>pigx 定时任务</description>
+	<description>mywuwu 定时任务</description>
 
 	<dependencies>
 		<!-- import elastic-job lite core -->

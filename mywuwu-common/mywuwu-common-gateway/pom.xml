@@ -30,7 +30,7 @@
 	<artifactId>mywuwu-common-gateway</artifactId>
 	<packaging>jar</packaging>
 
-	<description>pigx gateway</description>
+	<description>mywuwu gateway</description>
 
 	<dependencies>
 		<dependency>

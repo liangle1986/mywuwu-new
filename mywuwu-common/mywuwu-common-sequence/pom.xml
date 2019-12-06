@@ -12,7 +12,7 @@
 	<artifactId>mywuwu-common-sequence</artifactId>
 	<packaging>jar</packaging>
 
-	<description>pigx 分布式发号器</description>
+	<description>mywuwu 分布式发号器</description>
 
 	<dependencies>
 		<dependency>
