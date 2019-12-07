@@ -34,6 +34,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,6 @@ public class SearchHistoryController {
 	@ApiOperation(value = "新增", notes = "新增")
 	@SysLog("新增")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('nideshopsearchhistory_add')")
 	public R save(@RequestBody SearchHistory searchHistory) {
 		return R.ok(searchHistoryService.save(searchHistory));
 	}
@@ -128,22 +128,27 @@ public class SearchHistoryController {
 	 */
 	@ApiOperation(value = "查询", notes = "搜索")
 	@GetMapping("/index")
-	public R index() {
+	public R index(String opentId) {
 
 		Map<String, Object> resultObj = new HashMap();
 		//获取用户嘻嘻
-		PigxUser user = SecurityUtils.getUser();
+//		PigxUser user = SecurityUtils.getUser();
+		Page page = new Page();
+		page.setSize(1);
+		List<Keywords> keywordsEntityList = keywordsService.list(Wrappers.<Keywords>query().orderByAsc("id").lambda().eq(Keywords::getIsDefault, 1).last("limit 1"));
 
-		List<Keywords> keywordsEntityList = keywordsService.list(Wrappers.<Keywords>query().orderByAsc("id").lambda().eq(Keywords::getIsDefault, 1));
-
+		//取一个
 		Keywords keywords = keywordsEntityList != null && keywordsEntityList.size() > 0 ? keywordsEntityList.get(0) : null;
 
-		Page page = new Page();
+		//取出热闹关键词
+		List<Keywords> hotKeywordList = keywordsService.list(Wrappers.<Keywords>query().select("keyword,max(is_hot)").lambda().groupBy(Keywords::getKeyword).last("limit 10"));
+
+		page = new Page();
 		SearchHistory search = new SearchHistory();
-		search.setUserId(user != null ? user.getId() + "" : null);
+		search.setUserId(opentId);
 		IPage<SearchHistory> historyPage = searchHistoryService.page(page, Wrappers.<SearchHistory>query(search).orderByAsc("id"));
 
-		resultObj.put("hotKeywordList", keywordsEntityList);
+		resultObj.put("hotKeywordList", hotKeywordList);
 		resultObj.put("defaultKeyword", keywords);
 		resultObj.put("historyData", historyPage != null && historyPage.getRecords() != null && historyPage.getRecords().size() > 0 ? historyPage.getRecords() : null);
 		return R.ok(resultObj);
@@ -171,10 +176,30 @@ public class SearchHistoryController {
 	 */
 	@ApiOperation(value = "通过userid删除", notes = "通过userid删除")
 	@SysLog("通过id删除")
-	@DeleteMapping("/clearhistory")
-	public R removeByUserId() {
-		PigxUser user = SecurityUtils.getUser();
-		return R.ok(searchHistoryService.remove(Wrappers.<SearchHistory>query().lambda().eq(SearchHistory::getUserId, user.getId())));
+	@DeleteMapping("/clearhistory/{opentId}")
+	public R removeByUserId(@PathVariable("opentId") String opentId) {
+		return R.ok(searchHistoryService.remove(Wrappers.<SearchHistory>query().lambda().eq(SearchHistory::getUserId, opentId)));
 	}
+
+	/**
+	 * 添加历史记录
+	 *
+	 * @param id
+	 * @return R
+	 */
+	@ApiOperation(value = "小程序添加历史记录", notes = "添加历史记录")
+	@SysLog("添加历史记录")
+	@DeleteMapping("/addHistory")
+	public R addHistory(SearchHistory history) {
+		//获取是否存在
+		if (searchHistoryService.count(Wrappers.query(history)) > 0) {
+			return R.ok();
+		} else {
+			history.setAddTime(Math.toIntExact(new Date().getTime() / 1000));
+			return R.ok(searchHistoryService.save(history));
+		}
+
+	}
+
 
 }

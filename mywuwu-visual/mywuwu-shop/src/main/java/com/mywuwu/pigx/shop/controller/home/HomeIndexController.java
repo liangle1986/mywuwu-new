@@ -64,7 +64,7 @@ public class HomeIndexController {
 		resultObj.put("channel", channels);
 
 		Page page = new Page();
-		page.setSize(4);
+		page.setSize(7);
 		Goods goods = new Goods();
 		goods.setIsNew(1);
 		goods.setIsDelete(0);
@@ -72,7 +72,7 @@ public class HomeIndexController {
 		resultObj.put("newGoodsList", newGoods.getRecords());
 
 		page = new Page();
-		page.setSize(3);
+		page.setSize(5);
 		goods = new Goods();
 		goods.setIsHot(1);
 		goods.setIsDelete(0);

@@ -27,6 +27,9 @@ import com.mywuwu.pigx.shop.entity.OrderGoods;
 import com.mywuwu.pigx.shop.mapper.OrderMapper;
 import com.mywuwu.pigx.shop.service.*;
 import com.mywuwu.pigx.shop.vo.OrderVo;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,61 +39,63 @@ import java.util.stream.Collectors;
  * @author pigx code generator
  * @date 2019-08-26 22:22:44
  */
+@Slf4j
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
+	/**
+	 * 会员信息
+	 */
+	@Autowired
 	private UserService userService;
+	/**
+	 * 商品信息
+	 */
+	@Autowired
 	private GoodsService goodsService;
+	/**
+	 * 商品订单
+	 */
+	@Autowired
 	private OrderGoodsService orderGoodsService;
 
+	/**
+	 * 商品规格
+	 */
+	@Autowired
 	private GoodsSpecificationService specificationService;
 
+	/**
+	 * 优惠券
+	 */
+	@Autowired
+	private UserCouponService couponService;
+
+	@Override
 	public R saveUserOrderInfo(OrderVo order) {
 
-		Integer userId = SecurityUtils.getUser().getId();
 		try {
-			//根据用户ID查询当前下单用户是否一致
-			if (userService.getById(userId).getWeixinOpenid().equals(order.getOpentId())) {
-				Order showOrder = new Order();
+			//根据openid查询订单
+			if (baseMapper.selectCount(Wrappers.<Order>query().lambda().eq(Order::getUserId, order.getOpentId())) > 0) {
 
-//				showOrder.setOrderPrice(goods);
-				baseMapper.insert(showOrder);
-
-//			根据商品id查询商品详情
-				Goods goods = goodsService.getById(order.getGoodsId());
-
-				//获取商品规格
-				List<GoodsSpecificationEntity> entities = specificationService.list(Wrappers.<GoodsSpecificationEntity>query().lambda().eq(GoodsSpecificationEntity::getGoodsId, goods.getId()));
-
-
-				String ids = "";
-				String value = "";
-				if (entities != null && entities.size() > 0) {
-					ids = entities.stream().map(s -> s.getId()).collect(Collectors.toList()).toString();
-					value = entities.get(0).getValue();
-				}
-
-
-				//创建商品订单
-				OrderGoods orderGoods = new OrderGoods();
-				orderGoods.setGoodsId(goods.getId());
-				orderGoods.setGoodsName(goods.getName());
-				orderGoods.setGoodsSn(goods.getGoodsSn());
-				orderGoods.setGoodsSpecifitionIds(ids);
-				orderGoods.setGoodsSpecifitionNameValue(value);
-				orderGoods.setIsReal(goods.getCategoryId());
-				orderGoods.setListPicUrl(goods.getListPicUrl());
-				orderGoods.setMarketPrice(goods.getMarketPrice());
-				orderGoods.setOrderId(showOrder.getId());
-				orderGoods.setRetailPrice(goods.getRetailPrice());
-				orderGoods.setNumber(order.getNumber());
-				orderGoods.setProductId(goods.getPrimaryProductId());
-				orderGoodsService.save(orderGoods);
+				Order newOrder = baseMapper.selectOne(Wrappers.<Order>query().lambda().eq(Order::getUserId, order.getOpentId()).last("limit 1"));
+				newOrder.setUserId(order.getOpentId());
+				newOrder.setGoodsPrice(order.getPrice());
+				baseMapper.updateById(newOrder);
+			} else {
+				Order newOrder = new Order();
+				newOrder.setUserId(order.getOpentId());
+				newOrder.setGoodsPrice(order.getPrice());
+//				newOrder.set
+				baseMapper.insert(newOrder);
 			}
+			return R.ok("下单成功");
 		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return R.failed("下单失败" + e.getMessage());
 
 		}
-		return R.ok();
+
 	}
 
 }

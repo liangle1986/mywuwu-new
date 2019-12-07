@@ -76,12 +76,12 @@ public interface CommonConstants {
 	/**
 	 * 后端工程名
 	 */
-	String BACK_END_PROJECT = "pigx";
+	String BACK_END_PROJECT = "mywuwu";
 
 	/**
 	 * 公共参数
 	 */
-	String PIG_PUBLIC_PARAM_KEY = "PIG_PUBLIC_PARAM_KEY";
+	String PIG_PUBLIC_PARAM_KEY = "MYWUWU_PUBLIC_PARAM_KEY";
 
 	/**
 	 * 成功标记
@@ -95,5 +95,5 @@ public interface CommonConstants {
 	/**
 	 * 默认存储bucket
 	 */
-	String BUCKET_NAME = "lianglele";
+	String BUCKET_NAME = "mywuwu";
 }

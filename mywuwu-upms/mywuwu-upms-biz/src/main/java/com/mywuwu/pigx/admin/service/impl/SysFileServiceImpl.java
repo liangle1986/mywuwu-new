@@ -24,9 +24,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mywuwu.pigx.admin.api.entity.SysFile;
 import com.mywuwu.pigx.admin.mapper.SysFileMapper;
 import com.mywuwu.pigx.admin.service.SysFileService;
+import com.mywuwu.pigx.common.aliyun.service.AliyunTemplate;
 import com.mywuwu.pigx.common.core.constant.CommonConstants;
 import com.mywuwu.pigx.common.core.util.R;
-import com.mywuwu.pigx.common.minio.service.MinioTemplate;
 import com.mywuwu.pigx.common.security.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -50,7 +50,8 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> implements SysFileService {
-	private final MinioTemplate minioTemplate;
+	//	private final MinioTemplate minioTemplate;
+	private final AliyunTemplate aliyunTemplate;
 
 
 	/**
@@ -68,13 +69,14 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 		resultMap.put("url", String.format("/admin/sys-file/%s/%s", CommonConstants.BUCKET_NAME, fileName));
 
 		try {
-			minioTemplate.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
+			aliyunTemplate.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
 			//文件管理数据记录,收集管理追踪文件
 			fileLog(file, fileName);
 		} catch (Exception e) {
 			log.error("上传失败", e);
 			return R.failed(e.getLocalizedMessage());
 		}
+
 		return R.ok(resultMap);
 	}
 
@@ -87,9 +89,10 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	 */
 	@Override
 	public void getFile(String bucket, String fileName, HttpServletResponse response) {
-		try (InputStream inputStream = minioTemplate.getObject(bucket, fileName)) {
+		try (InputStream inputStream = aliyunTemplate.getObject(bucket, fileName)) {
 			response.setContentType("application/octet-stream; charset=UTF-8");
 			IoUtil.copy(inputStream, response.getOutputStream());
+
 		} catch (Exception e) {
 			log.error("文件读取异常", e);
 		}
@@ -106,9 +109,15 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> impl
 	@SneakyThrows
 	@Transactional(rollbackFor = Exception.class)
 	public Boolean deleteFile(Long id) {
-		SysFile file = this.getById(id);
-		minioTemplate.removeObject(CommonConstants.BUCKET_NAME, file.getFileName());
-		return this.removeById(id);
+		try {
+			SysFile file = this.getById(id);
+			aliyunTemplate.removeObject(CommonConstants.BUCKET_NAME, file.getFileName());
+			return this.removeById(id);
+		} catch (Exception e) {
+			log.error("文件删除异常", e);
+			return false;
+		}
+
 	}
 
 	/**

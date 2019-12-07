@@ -53,9 +53,13 @@
 			<artifactId>mywuwu-common-swagger</artifactId>
 		</dependency>
 		<!--文件系统-->
+		<!--<dependency>-->
+			<!--<groupId>com.mywuwu</groupId>-->
+			<!--<artifactId>mywuwu-common-minio</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.mywuwu</groupId>
-			<artifactId>mywuwu-common-minio</artifactId>
+			<artifactId>mywuwu-common-aliyun</artifactId>
 		</dependency>
 		<!--注册中心客户端-->
 		<dependency>
