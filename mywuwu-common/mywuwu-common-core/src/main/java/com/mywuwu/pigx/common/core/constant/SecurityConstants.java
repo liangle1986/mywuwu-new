@@ -43,7 +43,7 @@ public interface SecurityConstants {
 	/**
 	 * 前缀
 	 */
-	String PIGX_PREFIX = "mywuwu_";
+	String MYWUWU_PREFIX = "mywuwu_";
 
 	/**
 	 * oauth 相关前缀
@@ -52,7 +52,7 @@ public interface SecurityConstants {
 	/**
 	 * 项目的license
 	 */
-	String PIGX_LICENSE = "made by mywuwu";
+	String MYWUWU_LICENSE = "made by mywuwu";
 
 	/**
 	 * 内部

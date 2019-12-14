@@ -23,12 +23,39 @@
 
 <mapper namespace="com.mywuwu.pigx.shop.mapper.CollectMapper">
 
-  <resultMap id="nideshopCollectMap" type="com.mywuwu.pigx.shop.entity.Collect">
-                  <id property="id" column="id"/>
-                        <result property="userId" column="user_id"/>
-                        <result property="valueId" column="value_id"/>
-                        <result property="addTime" column="add_time"/>
-                        <result property="isAttention" column="is_attention"/>
-                        <result property="typeId" column="type_id"/>
-            </resultMap>
+	<resultMap id="nideshopCollectMap" type="com.mywuwu.pigx.shop.entity.Collect">
+		<id property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="valueId" column="value_id"/>
+		<result property="addTime" column="add_time"/>
+		<result property="isAttention" column="is_attention"/>
+		<result property="typeId" column="type_id"/>
+	</resultMap>
+
+	<!--获取我的收藏信息-->
+	<select id="selectCollectList" resultType="com.mywuwu.pigx.shop.vo.CollectVo">
+		select
+		c.id,
+		c.user_id,
+		c.goods_sn,
+		c.value_id,
+		c.brand_id,
+		c.is_attention,
+		c.type_id,
+		g.goods_brief,
+		g.name,
+		g.retail_price,
+		g.list_pic_url
+		from collect c
+		LEFT JOIN goods g
+		ON c.value_id = g.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="collect.userId != null">
+				and c.user_id = #{collect.userId}
+			</if>
+			<if test="collect.typeId != null">
+				and c.type_id = #{collect.typeId}
+			</if>
+		</trim>
+	</select>
 </mapper>

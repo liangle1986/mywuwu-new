@@ -18,14 +18,14 @@
 package com.mywuwu.pigx.shop.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.Collect;
 
 /**
- * 
- *
- * @author pigx code generator
+ * @author mywuwu 收藏夹
  * @date 2019-08-26 22:23:55
  */
 public interface CollectService extends IService<Collect> {
 
+	R selectCollectList(Collect collect);
 }

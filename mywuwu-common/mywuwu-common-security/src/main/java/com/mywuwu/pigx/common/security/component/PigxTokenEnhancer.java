@@ -55,7 +55,7 @@ public class PigxTokenEnhancer implements TokenEnhancer {
 		additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pigxUser.getUsername());
 		additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, pigxUser.getDeptId());
 		additionalInfo.put(SecurityConstants.DETAILS_TENANT_ID, pigxUser.getTenantId());
-		additionalInfo.put(SecurityConstants.DETAILS_LICENSE, SecurityConstants.PIGX_LICENSE);
+		additionalInfo.put(SecurityConstants.DETAILS_LICENSE, SecurityConstants.MYWUWU_LICENSE);
 		additionalInfo.put(SecurityConstants.ACTIVE, Boolean.TRUE);
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 		return accessToken;

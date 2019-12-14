@@ -23,13 +23,42 @@
 
 <mapper namespace="com.mywuwu.pigx.shop.mapper.CommentMapper">
 
-  <resultMap id="nideshopCommentMap" type="com.mywuwu.pigx.shop.entity.Comment">
-                  <id property="id" column="id"/>
-                        <result property="typeId" column="type_id"/>
-                        <result property="valueId" column="value_id"/>
-                        <result property="content" column="content"/>
-                        <result property="addTime" column="add_time"/>
-                        <result property="status" column="status"/>
-                        <result property="userId" column="user_id"/>
-            </resultMap>
+	<resultMap id="nideshopCommentMap" type="com.mywuwu.pigx.shop.entity.Comment">
+		<id property="id" column="id"/>
+		<result property="typeId" column="type_id"/>
+		<result property="valueId" column="value_id"/>
+		<result property="content" column="content"/>
+		<result property="addTime" column="add_time"/>
+		<result property="status" column="status"/>
+		<result property="userId" column="user_id"/>
+	</resultMap>
+
+	<!--评论信息数量-->
+	<select id="getCountComment">
+
+		select count(c.id) from `nideshop_comment` c
+		right join `nideshop_comment_picture` p on c.id = p.comment_id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="typeId != null">
+				and c.type_id = #{typeId}
+			</if>
+			<if test="valueId != null">
+				and c.value_id = #{valueId}
+			</if>
+		</trim>
+	</select>
+	<!--评论信息-->
+	<select id="selectCommentList" resultType="com.mywuwu.pigx.shop.vo.Comment">
+
+		select c.id, c.type_id , c.content, c.add_time, c.status, c.user_id from `nideshop_comment` c
+		right join `nideshop_comment_picture` p on c.id = p.comment_id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="commentDto.typeId != null">
+				and c.type_id = #{typeId.typeId}
+			</if>
+			<if test="commentDto.valueId != null">
+				and c.value_id = #{commentDto.valueId}
+			</if>
+		</trim>
+	</select>
 </mapper>

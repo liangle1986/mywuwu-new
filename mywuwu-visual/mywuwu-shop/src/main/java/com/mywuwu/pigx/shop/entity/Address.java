@@ -89,4 +89,10 @@ private static final long serialVersionUID = 1L;
      */
     @ApiModelProperty(value="详细收货地址信息")
     private String detailInfo;
+	/**
+	 * 默认收获地址 1：是
+	 */
+	@ApiModelProperty(value = "默认收货地址")
+	private Integer isDefault;
+
     }

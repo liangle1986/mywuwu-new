@@ -17,18 +17,22 @@
 package com.mywuwu.pigx.shop.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.Collect;
 import com.mywuwu.pigx.shop.mapper.CollectMapper;
 import com.mywuwu.pigx.shop.service.CollectService;
 import org.springframework.stereotype.Service;
 
 /**
- * 
- *
  * @author pigx code generator
  * @date 2019-08-26 22:23:55
  */
 @Service
 public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect> implements CollectService {
 
+
+	@Override
+	public R selectCollectList(Collect collect) {
+		return R.ok(baseMapper.selectCollectList(collect));
+	}
 }

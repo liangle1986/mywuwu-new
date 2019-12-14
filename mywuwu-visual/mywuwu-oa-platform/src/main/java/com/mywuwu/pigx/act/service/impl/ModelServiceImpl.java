@@ -71,7 +71,7 @@ public class ModelServiceImpl implements ModelService {
 			editorNode.put("id", "canvas");
 			editorNode.put("resourceId", "canvas");
 			ObjectNode properties = objectMapper.createObjectNode();
-			properties.put("process_author", SecurityConstants.PIGX_LICENSE);
+			properties.put("process_author", SecurityConstants.MYWUWU_LICENSE);
           	properties.put("process_id",key);
 			properties.put("name",name);
 			editorNode.set("properties", properties);

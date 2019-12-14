@@ -17,6 +17,7 @@
 
 package com.mywuwu.pigx.shop.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mywuwu.pigx.common.core.util.R;
@@ -24,7 +25,10 @@ import com.mywuwu.pigx.common.log.annotation.SysLog;
 import com.mywuwu.pigx.common.security.service.PigxUser;
 import com.mywuwu.pigx.common.security.util.SecurityUtils;
 import com.mywuwu.pigx.shop.entity.Cart;
+import com.mywuwu.pigx.shop.entity.Goods;
 import com.mywuwu.pigx.shop.service.CartService;
+import com.mywuwu.pigx.shop.service.GoodsService;
+import io.swagger.models.auth.In;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +36,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -45,6 +54,7 @@ import java.util.ArrayList;
 public class CartController {
 
 	private final CartService cartService;
+
 
 	/**
 	 * 分页查询
@@ -123,11 +133,94 @@ public class CartController {
 	@ApiOperation(value = "根据用户标示获取购物车商品", notes = "根据用户标示获取购物车商品")
 	@GetMapping("/cartList")
 	public R selectCartList() {
-		PigxUser user = SecurityUtils.getUser();
-		if (user != null) {
-			R.ok(cartService.list(Wrappers.<Cart>query().lambda().eq(Cart::getUserId, user.getId())));
-		}
-		return R.ok(new ArrayList<Cart>());
+		return R.ok(cartService.selectCartList());
 	}
+
+	/**
+	 * 小程序新增
+	 *
+	 * @param cart
+	 * @return R
+	 */
+	@ApiOperation(value = "小程序新增", notes = "小程序新增")
+	@SysLog("小程序新增")
+	@PostMapping("/add")
+	public R saveCart(@RequestBody Cart cart) {
+
+		return cartService.addCartGoods(cart);
+	}
+
+	/**
+	 * 小程序购物车修改
+	 *
+	 * @param cart
+	 * @return R
+	 */
+	@ApiOperation(value = "小程序购物车修改", notes = "小程序购物车修改")
+	@SysLog("小程序购物车修改")
+	@PostMapping("/add")
+	public R updateCart(@RequestBody Cart cart) {
+
+		return cartService.updateCartGoods(cart);
+	}
+
+	/**
+	 * 是否选择商品，如果已经选择，则取消选择，批量操作
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "小程序购物车修改", notes = "小程序购物车修改")
+	@SysLog("小程序购物车修改")
+	@PostMapping("/checked")
+	public R checked(String productIds, Integer isChecked) {
+		if (StrUtil.isEmpty(productIds)) {
+			return R.failed("删除出错");
+		}
+		Cart cart = new Cart();
+		cart.setChecked(isChecked);
+		cartService.update(cart, Wrappers.<Cart>query().lambda().eq(Cart::getProductId, productIds.split(",")));
+		return cartService.selectCartList();
+	}
+
+	/**
+	 * 删除选中的购物车商品，批量删除
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "小程序购物车修改", notes = "小程序购物车修改")
+	@SysLog("小程序购物车修改")
+	@DeleteMapping("/delete")
+	public R delete(String productIds, Integer isChecked) {
+		if (StrUtil.isEmpty(productIds)) {
+			return R.failed("删除出错");
+		}
+		cartService.remove(Wrappers.<Cart>query().lambda().in(Cart::getProductId, productIds.split(",")));
+		return cartService.selectCartList();
+	}
+
+	/**
+	 * 获取购物车商品的总件件数
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "获取购物车商品的总件件数", notes = "获取购物车商品的总件件数")
+	@SysLog("获取购物车商品的总件件数")
+	@GetMapping("/goodscount")
+	public R goodsCount() {
+		return R.ok(cartService.list(Wrappers.<Cart>query().lambda().eq(Cart::getUserId, SecurityUtils.getUser().getId())).stream().count());
+	}
+
+	/**
+	 * 获取购物车商品的总件件数
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "订单提交前的检验和填写相关订单信息", notes = "订单提交前的检验和填写相关订单信息")
+	@SysLog("订单提交前的检验和填写相关订单信息")
+	@GetMapping("/checkout/{addressId}")
+	public R checkoutCart(@PathVariable Integer addressId) {
+		return cartService.checkoutCart(addressId);
+	}
+
 
 }

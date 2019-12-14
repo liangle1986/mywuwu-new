@@ -127,7 +127,7 @@ public class CategoryController {
 
 	/**
 	 * 通过id删除
-	 *
+	 *R
 	 * @param id id
 	 * @return R
 	 */

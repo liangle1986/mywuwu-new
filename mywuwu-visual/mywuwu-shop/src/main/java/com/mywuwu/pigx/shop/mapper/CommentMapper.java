@@ -18,14 +18,21 @@
 package com.mywuwu.pigx.shop.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mywuwu.pigx.shop.entity.Comment;
+import com.mywuwu.pigx.shop.entity.dto.CommentDto;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
- * 
- *
  * @author pigx code generator
  * @date 2019-08-26 22:24:07
  */
 public interface CommentMapper extends BaseMapper<Comment> {
 
+	Integer getCountComment(@Param("typeId") Integer typeId, @Param("valueId") Integer valueId);
+
+	List<Comment> selectCommentList(Page page, @Param("commentDto") CommentDto commentDto);
 }

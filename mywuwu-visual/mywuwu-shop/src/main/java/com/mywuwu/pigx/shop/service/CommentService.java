@@ -17,15 +17,32 @@
 
 package com.mywuwu.pigx.shop.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.Comment;
+import com.mywuwu.pigx.shop.entity.dto.CommentDto;
 
 /**
- * 
- *
  * @author pigx code generator
  * @date 2019-08-26 22:24:07
  */
 public interface CommentService extends IService<Comment> {
 
+	/**
+	 * 获取评论数量
+	 *
+	 * @param typeId  类型id
+	 * @param valueId 商品id
+	 * @return
+	 */
+	R getCountComment(Integer typeId, Integer valueId);
+
+	/**
+	 * 获取评论信息
+	 * @param commentDto 参数
+	 * @param  page 分页
+	 * @return
+	 */
+	R selectCommentList(Page page, CommentDto commentDto);
 }

@@ -69,10 +69,10 @@ private static final long serialVersionUID = 1L;
      * 零售价格
      */
     @ApiModelProperty(value="零售价格")
-    private BigDecimal retailPrice;
+    private Double retailPrice;
     /**
      * 价格
      */
     @ApiModelProperty(value="价格")
-    private BigDecimal marketPrice;
+    private Double marketPrice;
     }

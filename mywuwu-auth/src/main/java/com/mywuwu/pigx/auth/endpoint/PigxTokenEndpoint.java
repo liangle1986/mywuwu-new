@@ -67,7 +67,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/token")
 public class PigxTokenEndpoint {
-	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX + "auth_to_access:";
+	private static final String PIGX_OAUTH_ACCESS = SecurityConstants.MYWUWU_PREFIX + SecurityConstants.OAUTH_PREFIX + "auth_to_access:";
 	private final ClientDetailsService clientDetailsService;
 	private final RedisTemplate redisTemplate;
 	private final TokenStore tokenStore;

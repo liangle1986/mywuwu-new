@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.common.log.annotation.SysLog;
+import com.mywuwu.pigx.common.security.util.SecurityUtils;
 import com.mywuwu.pigx.shop.entity.Address;
 import com.mywuwu.pigx.shop.service.AddressService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,80 +32,106 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 
- *
  * @author pigx code generator
  * @date 2019-08-26 22:24:02
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/nideshopaddress" )
+@RequestMapping("/nideshopaddress")
 @Api(value = "nideshopaddress", tags = "管理")
 public class AddressController {
 
-    private final AddressService addressService;
+	private final AddressService addressService;
 
-    /**
-     * 分页查询
-     * @param page 分页对象
-     * @param nideshopAddress 
-     * @return
-     */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    @GetMapping("/page" )
-    public R getNideshopAddressPage(Page page, Address nideshopAddress) {
-        return R.ok(addressService.page(page, Wrappers.query(nideshopAddress)));
-    }
+	/**
+	 * 分页查询
+	 *
+	 * @param page            分页对象
+	 * @param nideshopAddress
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/page")
+	public R getNideshopAddressPage(Page page, Address nideshopAddress) {
+		return R.ok(addressService.page(page, Wrappers.query(nideshopAddress)));
+	}
 
 
-    /**
-     * 通过id查询
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
-    public R getById(@PathVariable("id" ) Integer id) {
-        return R.ok(addressService.getById(id));
-    }
+	/**
+	 * 通过id查询
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/{id}")
+	public R getById(@PathVariable("id") Integer id) {
+		return R.ok(addressService.getById(id));
+	}
 
-    /**
-     * 新增
-     * @param nideshopAddress 
-     * @return R
-     */
-    @ApiOperation(value = "新增", notes = "新增")
-    @SysLog("新增" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('nideshopaddress_add')" )
-    public R save(@RequestBody Address nideshopAddress) {
-        return R.ok(addressService.save(nideshopAddress));
-    }
+	/**
+	 * 新增
+	 *
+	 * @param nideshopAddress
+	 * @return R
+	 */
+	@ApiOperation(value = "新增", notes = "新增")
+	@SysLog("新增")
+	@PostMapping
+//	@PreAuthorize("@pms.hasPermission('nideshopaddress_add')")
+	public R save(@RequestBody Address nideshopAddress) {
+		return R.ok(addressService.save(nideshopAddress));
+	}
 
-    /**
-     * 修改
-     * @param nideshopAddress 
-     * @return R
-     */
-    @ApiOperation(value = "修改", notes = "修改")
-    @SysLog("修改" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('nideshopaddress_edit')" )
-    public R updateById(@RequestBody Address nideshopAddress) {
-        return R.ok(addressService.updateById(nideshopAddress));
-    }
+	/**
+	 * 修改
+	 *
+	 * @param nideshopAddress
+	 * @return R
+	 */
+	@ApiOperation(value = "修改", notes = "修改")
+	@SysLog("修改")
+	@PutMapping
+//	@PreAuthorize("@pms.hasPermission('nideshopaddress_edit')")
+	public R updateById(@RequestBody Address nideshopAddress) {
+		return R.ok(addressService.updateById(nideshopAddress));
+	}
 
-    /**
-     * 通过id删除
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除" )
-    @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('nideshopaddress_del')" )
-    public R removeById(@PathVariable Integer id) {
-        return R.ok(addressService.removeById(id));
-    }
+	/**
+	 * 通过id删除
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id删除", notes = "通过id删除")
+	@SysLog("通过id删除")
+	@DeleteMapping("/{id}")
+//	@PreAuthorize("@pms.hasPermission('nideshopaddress_del')")
+	public R removeById(@PathVariable Integer id) {
+		return R.ok(addressService.removeById(id));
+	}
+
+
+	/**
+	 * 小程序查询地址
+	 *
+	 * @return
+	 */
+	@ApiOperation(value = "查询地址", notes = "查询地址")
+	@GetMapping("/list")
+	public R list() {
+		return R.ok(addressService.list(Wrappers.<Address>query().lambda().eq(Address::getUserId, SecurityUtils.getUser().getId())));
+	}
+
+	/**
+	 * 小程序查询地址详情
+	 *
+	 * @return
+	 */
+	@ApiOperation(value = "查询详情", notes = "查询详情")
+	@GetMapping("/detail/{id}")
+	public R detail(@PathVariable Integer id) {
+		return R.ok(addressService.getOne(Wrappers.<Address>query().lambda().eq(Address::getUserId, SecurityUtils.getUser().getId()).eq(Address::getId, id)));
+	}
 
 }

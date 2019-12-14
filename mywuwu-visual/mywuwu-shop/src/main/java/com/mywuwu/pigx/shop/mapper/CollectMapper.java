@@ -19,13 +19,16 @@ package com.mywuwu.pigx.shop.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mywuwu.pigx.shop.entity.Collect;
+import com.mywuwu.pigx.shop.vo.CollectVo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
- * 
- *
- * @author pigx code generator
+ * @author mywuwu 收藏
  * @date 2019-08-26 22:23:55
  */
 public interface CollectMapper extends BaseMapper<Collect> {
 
+	List<CollectVo> selectCollectList(@Param("collect") Collect collect);
 }

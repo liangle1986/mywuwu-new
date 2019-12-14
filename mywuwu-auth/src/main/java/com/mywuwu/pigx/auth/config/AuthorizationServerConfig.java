@@ -93,7 +93,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public TokenStore tokenStore() {
 		RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
-		tokenStore.setPrefix(SecurityConstants.PIGX_PREFIX + SecurityConstants.OAUTH_PREFIX);
+		tokenStore.setPrefix(SecurityConstants.MYWUWU_PREFIX + SecurityConstants.OAUTH_PREFIX);
 		tokenStore.setAuthenticationKeyGenerator(new DefaultAuthenticationKeyGenerator() {
 			@Override
 			public String extractKey(OAuth2Authentication authentication) {
