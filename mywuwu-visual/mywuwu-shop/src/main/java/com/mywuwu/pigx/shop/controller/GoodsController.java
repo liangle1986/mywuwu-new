@@ -218,4 +218,31 @@ public class GoodsController {
 		return R.ok(goodsService.removeById(id));
 	}
 
+
+	/**
+	 * 获取销售商品的数量
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "获取销售商品的数量", notes = "获取销售商品的数量")
+	@GetMapping("/count")
+	public R selectGoodsCount() {
+		return R.ok(goodsService.count(Wrappers.<Goods>query().lambda().eq(Goods::getIsDelete, 0).eq(Goods::getIsOnSale, 1)));
+	}
+
+	/**
+	 * 获取sku信息，用于购物车编辑时选择规格
+	 *
+	 * @returns {Promise.<Promise|PreventPromise|void>}
+	 */
+	@ApiOperation(value = "获取sku信息", notes = "获取sku信息")
+	@GetMapping("/sku/{id}")
+	public R selectSku(@PathVariable Integer id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("specificationList", goodsSpecificationService.list(Wrappers.<GoodsSpecificationEntity>query().lambda().eq(GoodsSpecificationEntity::getGoodsId, id)));
+		resultMap.put("specificationList", productService.list(Wrappers.<Product>query().lambda().eq(Product::getGoodsId, id)));
+
+		return R.ok(resultMap);
+	}
+
 }

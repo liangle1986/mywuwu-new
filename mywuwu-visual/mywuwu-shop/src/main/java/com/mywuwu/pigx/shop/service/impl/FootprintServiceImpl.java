@@ -17,18 +17,29 @@
 package com.mywuwu.pigx.shop.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mywuwu.pigx.common.core.util.R;
+import com.mywuwu.pigx.common.security.util.SecurityUtils;
 import com.mywuwu.pigx.shop.entity.Footprint;
 import com.mywuwu.pigx.shop.mapper.FootprintMapper;
 import com.mywuwu.pigx.shop.service.FootprintService;
 import org.springframework.stereotype.Service;
 
 /**
- * 
- *
- * @author pigx code generator
+ * @author 足迹
  * @date 2019-08-26 22:22:23
  */
 @Service
 public class FootprintServiceImpl extends ServiceImpl<FootprintMapper, Footprint> implements FootprintService {
 
+
+	/**
+	 * @description: 获取用户足迹
+	 * @return: 足迹信息
+	 * @author: lianglele
+	 * @date: 2019-12-14 18:16
+	 */
+	@Override
+	public R selectFootPrintList() {
+		return R.ok(baseMapper.selectFootPrintLIst(SecurityUtils.getUser().getId() + ""));
+	}
 }

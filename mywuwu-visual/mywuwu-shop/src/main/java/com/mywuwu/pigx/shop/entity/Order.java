@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -54,7 +55,7 @@ public class Order extends Model<Order> {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private String userId;
+	private Integer userId;
 	/**
 	 *
 	 */
@@ -139,7 +140,7 @@ public class Order extends Model<Order> {
 	 * 实际需要支付的金额
 	 */
 	@ApiModelProperty(value = "实际需要支付的金额")
-	private BigDecimal actualPrice;
+	private Double actualPrice;
 	/**
 	 *
 	 */
@@ -149,17 +150,17 @@ public class Order extends Model<Order> {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private BigDecimal integralMoney;
+	private Double integralMoney;
 	/**
 	 * 订单总价
 	 */
 	@ApiModelProperty(value = "订单总价")
-	private BigDecimal orderPrice;
+	private Data orderPrice;
 	/**
 	 * 商品总价
 	 */
 	@ApiModelProperty(value = "商品总价")
-	private BigDecimal goodsPrice;
+	private Double goodsPrice;
 	/**
 	 *
 	 */
@@ -194,7 +195,7 @@ public class Order extends Model<Order> {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private BigDecimal couponPrice;
+	private Double couponPrice;
 	/**
 	 *
 	 */
@@ -209,7 +210,7 @@ public class Order extends Model<Order> {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private BigDecimal fullCutPrice;
+	private Double fullCutPrice;
 	/**
 	 *
 	 */

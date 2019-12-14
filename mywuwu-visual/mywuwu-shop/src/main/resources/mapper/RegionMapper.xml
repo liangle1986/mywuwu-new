@@ -21,35 +21,13 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mywuwu.pigx.shop.mapper.FootprintMapper">
+<mapper namespace="com.mywuwu.pigx.shop.mapper.RegionMapper">
 
-	<resultMap id="nideshopFootprintMap" type="com.mywuwu.pigx.shop.vo.FootprintVo">
+	<resultMap id="nideshopRegionMap" type="com.mywuwu.pigx.shop.entity.Region">
 		<id property="id" column="id"/>
-		<result property="userId" column="user_id"/>
-		<result property="goodsId" column="goods_id"/>
-		<result property="addTime" column="add_time"/>
-		<result property="referrer" column="referrer"/>
 		<result property="name" column="name"/>
-		<result property="listPicUrl" column="list_pic_url"/>
-		<result property="retailPrice" column="retail_price"/>
-		<result property="goodsBrief" column="goods_brief"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="type" column="type"/>
+		<result property="agencyId" column="agency_id"/>
 	</resultMap>
-
-	<select id="selectFootPrintLIst" resultType="com.mywuwu.pigx.shop.vo.FootprintVo">
-		SELECT
-		f.id,f.user_id,f.goods_id,f.add_time,f.referrer,g. NAME,
-		g.list_pic_url,
-		g.goods_brief,
-		g.retail_price
-		FROM
-		`nideshop_footprint` f
-		LEFT JOIN nideshop_goods g ON f.goods_id = g.id
-		<trim prefix="where" prefixOverrides="and|or">
-			<if test="userId != null">
-				and f.user_id = #{userId}
-			</if>
-
-		</trim>
-		order by id
-	</select>
 </mapper>

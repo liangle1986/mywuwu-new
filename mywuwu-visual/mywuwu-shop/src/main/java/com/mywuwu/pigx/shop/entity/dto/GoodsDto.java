@@ -45,19 +45,19 @@ public class GoodsDto {
 	@ApiModelProperty(value = "")
 	private Integer id;
 	/**
-	 *
+	 *分类id
 	 */
-	@ApiModelProperty(value = "")
+	@ApiModelProperty(value = "分类id")
 	private Integer categoryId;
 	/**
-	 *
+	 *新品首发
 	 */
-	@ApiModelProperty(value = "")
+	@ApiModelProperty(value = "新品首发")
 	private Integer isNew;
 	/**
-	 *
+	 *人气推荐
 	 */
-	@ApiModelProperty(value = "")
+	@ApiModelProperty(value = "人气推荐")
 	private Integer isHot;
 	/**
 	 *

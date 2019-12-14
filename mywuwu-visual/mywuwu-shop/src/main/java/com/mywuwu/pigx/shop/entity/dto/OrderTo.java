@@ -15,21 +15,48 @@
  * Author: lianglele (liangle1986@126.com)
  */
 
-package com.mywuwu.pigx.shop.mapper;
+package com.mywuwu.pigx.shop.entity.dto;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mywuwu.pigx.shop.entity.Footprint;
-import com.mywuwu.pigx.shop.vo.FootprintVo;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
- * @author 梁乐乐用户足迹
- * @date 2019-08-26 22:22:23
+ * @author pigx code generator
+ * @date 2019-08-26 22:22:44
  */
-public interface FootprintMapper extends BaseMapper<Footprint> {
+@Data
+@ApiModel(value = "")
+public class OrderTo {
+	private static final long serialVersionUID = 1L;
 
-	List<FootprintVo> selectFootPrintLIst(@Param("userId") String userId);
+
+	/**
+	 *
+	 */
+	@ApiModelProperty(value = "")
+	private Integer userId;
+	/**
+	 *
+	 */
+	@ApiModelProperty(value = "")
+	private Integer goodsId;
+	/**
+	 *
+	 */
+	@ApiModelProperty(value = "")
+	private Integer number;
+
+	/**
+	 * 商品总价
+	 */
+	@ApiModelProperty(value = "商品总价")
+	private Double price;
+
+	/**
+	 * 微信开放标
+	 */
+	@ApiModelProperty(value = "")
+	private String opentId;
 
 }

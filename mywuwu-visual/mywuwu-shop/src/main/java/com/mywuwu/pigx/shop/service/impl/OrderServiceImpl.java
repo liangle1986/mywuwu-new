@@ -16,24 +16,22 @@
  */
 package com.mywuwu.pigx.shop.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.common.security.util.SecurityUtils;
-import com.mywuwu.pigx.shop.entity.Goods;
-import com.mywuwu.pigx.shop.entity.GoodsSpecificationEntity;
 import com.mywuwu.pigx.shop.entity.Order;
 import com.mywuwu.pigx.shop.entity.OrderGoods;
+import com.mywuwu.pigx.shop.entity.dto.OrderTo;
 import com.mywuwu.pigx.shop.mapper.OrderMapper;
 import com.mywuwu.pigx.shop.service.*;
 import com.mywuwu.pigx.shop.vo.OrderVo;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author pigx code generator
@@ -70,21 +68,62 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	 */
 	@Autowired
 	private UserCouponService couponService;
+	/**
+	 * 城市
+	 */
+	@Autowired
+	private RegionService regionService;
+	private Integer goodsCount;
+
+	/**
+	 * @description: 获取用户订单
+	 * @return: R
+	 * @author: lianglele
+	 * @date: 2019-12-14 18:46
+	 */
+	@Override
+	public R selectOrderList() {
+		try {
+
+			List<Order> orderList = baseMapper.selectList(Wrappers.<Order>query().lambda().eq(Order::getUserId, SecurityUtils.getUser().getId()));
+			List<OrderVo> orderVoList = null;
+			orderList.stream().forEach(o -> {
+				OrderVo vo = new OrderVo();
+				BeanUtil.copyProperties(o, vo);
+				//获取订单商品
+				List<OrderGoods> orderGoodsList = orderGoodsService.list(Wrappers.<OrderGoods>query().lambda().eq(OrderGoods::getOrderId, vo.getId()));
+				vo.setOrderGoodsList(orderGoodsList);
+				this.goodsCount = 0;
+				orderGoodsList.forEach(g -> {
+					this.goodsCount += g.getNumber();
+				});
+				vo.setGoodsCount(goodsCount);
+				orderVoList.add(vo);
+			});
+
+			return R.ok(orderVoList);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return R.failed("查询失败" + e.getMessage());
+
+		}
+	}
+
 
 	@Override
-	public R saveUserOrderInfo(OrderVo order) {
+	public R saveUserOrderInfo(OrderTo order) {
 
 		try {
 			//根据openid查询订单
 			if (baseMapper.selectCount(Wrappers.<Order>query().lambda().eq(Order::getUserId, order.getOpentId())) > 0) {
 
 				Order newOrder = baseMapper.selectOne(Wrappers.<Order>query().lambda().eq(Order::getUserId, order.getOpentId()).last("limit 1"));
-				newOrder.setUserId(order.getOpentId());
+				newOrder.setUserId(order.getUserId());
 				newOrder.setGoodsPrice(order.getPrice());
 				baseMapper.updateById(newOrder);
 			} else {
 				Order newOrder = new Order();
-				newOrder.setUserId(order.getOpentId());
+				newOrder.setUserId(order.getUserId());
 				newOrder.setGoodsPrice(order.getPrice());
 //				newOrder.set
 				baseMapper.insert(newOrder);
@@ -96,6 +135,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 		}
 
+	}
+
+	public R selectOrderDetail(Integer orderId) {
+
+		Order order = baseMapper.selectOne(Wrappers.<Order>query().lambda().eq(Order::getUserId, SecurityUtils.getUser().getId()).eq(Order::getId, orderId));
+		if (order == null) {
+			return R.failed("订单不存在");
+		}
+//		order.setProvince(regionService.getById(order.getProvince()).getName());
+		return R.ok();
 	}
 
 }

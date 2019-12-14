@@ -15,7 +15,7 @@
  * Author: lianglele (liangle1986@126.com)
  */
 
-package com.mywuwu.pigx.shop.entity;
+package com.mywuwu.pigx.shop.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -26,53 +26,64 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 
- *
- * @author pigx code generator
- * @date 2019-08-26 22:24:07
+ * @author 收藏获取类型
+ * @date 2019-08-26 22:23:55
  */
 @Data
-@TableName("comment")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "")
-public class Comment extends Model<Comment> {
-private static final long serialVersionUID = 1L;
+public class CollectVo {
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
-    @TableId
-    @ApiModelProperty(value="主键")
-    private Integer id;
-    /**
-     * 类型
-	 * 0 商品 1 专题
-     */
-    @ApiModelProperty(value="类型")
-    private Integer typeId;
-    /**
-     * 
-     */
-    @ApiModelProperty(value="")
-    private Integer valueId;
-    /**
-     * 储存为base64编码
-     */
-    @ApiModelProperty(value="储存为base64编码")
-    private String content;
-    /**
-     * 记录时间
-     */
-    @ApiModelProperty(value="记录时间")
-    private Long addTime;
-    /**
-     * 状态
-     */
-    @ApiModelProperty(value="状态")
-    private Integer status;
-    /**
-     * 会员Id
-     */
-    @ApiModelProperty(value="会员Id")
-    private Integer userId;
-    }
+	/**
+	 * 主键
+	 */
+	@TableId
+	@ApiModelProperty(value = "主键")
+	private Integer id;
+	/**
+	 * 用户Id
+	 */
+	@ApiModelProperty(value = "用户Id")
+	private Integer userId;
+	/**
+	 * 产品Id
+	 */
+	@ApiModelProperty(value = "产品Id")
+	private Integer valueId;
+	/**
+	 * 添加时间
+	 */
+	@ApiModelProperty(value = "添加时间")
+	private Integer addTime;
+	/**
+	 * 是否提醒
+	 */
+	@ApiModelProperty(value = "是否提醒")
+	private Integer isAttention;
+	/**
+	 *
+	 */
+	@ApiModelProperty(value = "")
+	private Integer typeId;
+
+	/**
+	 *
+	 */
+	@ApiModelProperty(value = "")
+	private String goodsBrief;
+	/**
+	 * 商品名
+	 */
+	@ApiModelProperty(value = "")
+	private String name;
+	/**
+	 * 零售价格
+	 */
+	@ApiModelProperty(value = "零售价格")
+	private Double retailPrice;
+	/**
+	 * 商品列表图
+	 */
+	@ApiModelProperty(value = "商品列表图")
+	private String listPicUrl;
+}

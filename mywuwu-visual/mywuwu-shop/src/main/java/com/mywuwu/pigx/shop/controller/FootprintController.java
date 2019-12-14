@@ -31,80 +31,97 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 
- *
  * @author pigx code generator
  * @date 2019-08-26 22:22:23
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/nideshopfootprint" )
+@RequestMapping("/nideshopfootprint")
 @Api(value = "nideshopfootprint", tags = "管理")
 public class FootprintController {
 
-    private final FootprintService footprintService;
+	private final FootprintService footprintService;
 
-    /**
-     * 分页查询
-     * @param page 分页对象
-     * @param footprint
-     * @return
-     */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    @GetMapping("/page" )
-    public R getNideshopFootprintPage(Page page, Footprint footprint) {
-        return R.ok(footprintService.page(page, Wrappers.query(footprint)));
-    }
+	/**
+	 * 分页查询
+	 *
+	 * @param page      分页对象
+	 * @param footprint
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/page")
+	public R getNideshopFootprintPage(Page page, Footprint footprint) {
+		return R.ok(footprintService.page(page, Wrappers.query(footprint)));
+	}
 
 
-    /**
-     * 通过id查询
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{id}" )
-    public R getById(@PathVariable("id" ) Integer id) {
-        return R.ok(footprintService.getById(id));
-    }
+	/**
+	 * 通过id查询
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/{id}")
+	public R getById(@PathVariable("id") Integer id) {
+		return R.ok(footprintService.getById(id));
+	}
 
-    /**
-     * 新增
-     * @param footprint
-     * @return R
-     */
-    @ApiOperation(value = "新增", notes = "新增")
-    @SysLog("新增" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('nideshopfootprint_add')" )
-    public R save(@RequestBody Footprint footprint) {
-        return R.ok(footprintService.save(footprint));
-    }
+	/**
+	 * 新增
+	 *
+	 * @param footprint
+	 * @return R
+	 */
+	@ApiOperation(value = "新增", notes = "新增")
+	@SysLog("新增")
+	@PostMapping
+	@PreAuthorize("@pms.hasPermission('nideshopfootprint_add')")
+	public R save(@RequestBody Footprint footprint) {
+		return R.ok(footprintService.save(footprint));
+	}
 
-    /**
-     * 修改
-     * @param footprint
-     * @return R
-     */
-    @ApiOperation(value = "修改", notes = "修改")
-    @SysLog("修改" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('nideshopfootprint_edit')" )
-    public R updateById(@RequestBody Footprint footprint) {
-        return R.ok(footprintService.updateById(footprint));
-    }
+	/**
+	 * 修改
+	 *
+	 * @param footprint
+	 * @return R
+	 */
+	@ApiOperation(value = "修改", notes = "修改")
+	@SysLog("修改")
+	@PutMapping
+	@PreAuthorize("@pms.hasPermission('nideshopfootprint_edit')")
+	public R updateById(@RequestBody Footprint footprint) {
+		return R.ok(footprintService.updateById(footprint));
+	}
 
-    /**
-     * 通过id删除
-     * @param id id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除", notes = "通过id删除")
-    @SysLog("通过id删除" )
-    @DeleteMapping("/{id}" )
-    @PreAuthorize("@pms.hasPermission('nideshopfootprint_del')" )
-    public R removeById(@PathVariable Integer id) {
-        return R.ok(footprintService.removeById(id));
-    }
+	/**
+	 * 通过id删除
+	 *
+	 * @param id id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id删除", notes = "通过id删除")
+	@SysLog("通过id删除")
+	@DeleteMapping("/{id}")
+//	@PreAuthorize("@pms.hasPermission('nideshopfootprint_del')")
+	public R removeById(@PathVariable Integer id) {
+		Footprint fp = footprintService.getById(id);
+		return R.ok(footprintService.remove(Wrappers.<Footprint>query().lambda().eq(Footprint::getUserId, fp.getUserId()).eq(Footprint::getGoodsId, fp.getGoodsId())));
+	}
+
+
+	/**
+	 * 查询足迹商品信息
+	 *
+	 * @return
+	 */
+	@ApiOperation(value = "查询足迹商品信息", notes = "查询足迹商品信息")
+	@GetMapping("/list")
+	public R selectFootPrintLIst() {
+		return footprintService.selectFootPrintList();
+	}
+
 
 }

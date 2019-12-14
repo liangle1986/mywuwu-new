@@ -18,18 +18,15 @@
 package com.mywuwu.pigx.shop.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mywuwu.pigx.shop.entity.Footprint;
-import com.mywuwu.pigx.shop.vo.FootprintVo;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.mywuwu.pigx.shop.entity.Order;
+import com.mywuwu.pigx.shop.entity.Region;
 
 /**
- * @author 梁乐乐用户足迹
- * @date 2019-08-26 22:22:23
+ * 
+ *
+ * @author pigx code generator
+ * @date 2019-08-26 22:22:44
  */
-public interface FootprintMapper extends BaseMapper<Footprint> {
-
-	List<FootprintVo> selectFootPrintLIst(@Param("userId") String userId);
+public interface RegionMapper extends BaseMapper<Region> {
 
 }

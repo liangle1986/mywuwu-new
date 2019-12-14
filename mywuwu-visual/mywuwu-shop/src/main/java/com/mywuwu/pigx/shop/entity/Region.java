@@ -25,54 +25,46 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 /**
- * 
- *
- * @author pigx code generator
- * @date 2019-08-26 22:24:07
+ * @author lianglele
+ * @date 2019-08-26 22:22:44
  */
 @Data
-@TableName("comment")
+@TableName("shop_region")
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "")
-public class Comment extends Model<Comment> {
-private static final long serialVersionUID = 1L;
+public class Region extends Model<Region> {
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
-    @TableId
-    @ApiModelProperty(value="主键")
-    private Integer id;
-    /**
-     * 类型
-	 * 0 商品 1 专题
-     */
-    @ApiModelProperty(value="类型")
-    private Integer typeId;
-    /**
-     * 
-     */
-    @ApiModelProperty(value="")
-    private Integer valueId;
-    /**
-     * 储存为base64编码
-     */
-    @ApiModelProperty(value="储存为base64编码")
-    private String content;
-    /**
-     * 记录时间
-     */
-    @ApiModelProperty(value="记录时间")
-    private Long addTime;
-    /**
-     * 状态
-     */
-    @ApiModelProperty(value="状态")
-    private Integer status;
-    /**
-     * 会员Id
-     */
-    @ApiModelProperty(value="会员Id")
-    private Integer userId;
-    }
+	/**
+	 *
+	 */
+	@TableId
+	@ApiModelProperty(value = "")
+	private Integer id;
+	/**
+	 *
+	 */
+	@ApiModelProperty(value = "")
+	private String name;
+	/**
+	 *
+	 */
+	@TableId
+	@ApiModelProperty(value = "")
+	private Integer parent_id;
+	/**
+	 *
+	 */
+	@TableId
+	@ApiModelProperty(value = "")
+	private Integer type;	/**
+	 *
+	 */
+	@TableId
+	@ApiModelProperty(value = "")
+	private Integer agencyId;
+}

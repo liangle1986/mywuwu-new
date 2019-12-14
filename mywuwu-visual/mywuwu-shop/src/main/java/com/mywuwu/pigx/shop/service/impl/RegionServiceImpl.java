@@ -14,22 +14,22 @@
  * this software without specific prior written permission.
  * Author: lianglele (liangle1986@126.com)
  */
+package com.mywuwu.pigx.shop.service.impl;
 
-package com.mywuwu.pigx.shop.mapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mywuwu.pigx.shop.entity.Region;
+import com.mywuwu.pigx.shop.mapper.RegionMapper;
+import com.mywuwu.pigx.shop.service.RegionService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mywuwu.pigx.shop.entity.Footprint;
-import com.mywuwu.pigx.shop.vo.FootprintVo;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
- * @author 梁乐乐用户足迹
- * @date 2019-08-26 22:22:23
+ * @author pigx code generator
+ * @date 2019-08-26 22:22:44
  */
-public interface FootprintMapper extends BaseMapper<Footprint> {
-
-	List<FootprintVo> selectFootPrintLIst(@Param("userId") String userId);
+@Slf4j
+@Service
+public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> implements RegionService {
 
 }

@@ -15,21 +15,15 @@
  * Author: lianglele (liangle1986@126.com)
  */
 
-package com.mywuwu.pigx.shop.mapper;
+package com.mywuwu.pigx.shop.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mywuwu.pigx.shop.entity.Footprint;
-import com.mywuwu.pigx.shop.vo.FootprintVo;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.mywuwu.pigx.shop.entity.Region;
 
 /**
- * @author 梁乐乐用户足迹
- * @date 2019-08-26 22:22:23
+ * @author lianglele
+ * @date 2019-08-26 22:22:44
  */
-public interface FootprintMapper extends BaseMapper<Footprint> {
-
-	List<FootprintVo> selectFootPrintLIst(@Param("userId") String userId);
+public interface RegionService extends IService<Region> {
 
 }

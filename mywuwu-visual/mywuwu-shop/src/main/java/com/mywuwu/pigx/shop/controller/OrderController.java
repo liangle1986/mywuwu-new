@@ -123,4 +123,15 @@ public class OrderController {
 	public R saveOrder(@RequestBody OrderVo order) {
 		return orderService.saveUserOrderInfo(order);
 	}
+
+	/**
+	 * 获取订单列表
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "获取订单列表", notes = "获取订单列表")
+	@GetMapping("/list")
+	public R selectOrderList() {
+		return R.ok(orderService.se);
+	}
 }
