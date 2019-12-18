@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @RefreshScope
 @Configuration
-@ConfigurationProperties(prefix = "pigx.tenant")
+@ConfigurationProperties(prefix = "mywuwu.tenant")
 public class PigxTenantConfigProperties {
 
 	/**
