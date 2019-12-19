@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.Order;
 import com.mywuwu.pigx.shop.entity.dto.OrderTo;
-import com.mywuwu.pigx.shop.vo.OrderVo;
 
 /**
  * @author lianglele

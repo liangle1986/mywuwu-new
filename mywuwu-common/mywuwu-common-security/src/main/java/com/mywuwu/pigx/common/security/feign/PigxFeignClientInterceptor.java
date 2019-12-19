@@ -12,7 +12,7 @@
  * Neither the name of the ywuwu.com developer nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * Author: lengleng (lianglele1986@126.com)
+ * Author: lianglele (lianglele1986@126.com)
  */
 
 package com.mywuwu.pigx.common.security.feign;
@@ -29,7 +29,7 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import java.util.Collection;
 
 /**
- * @author lengleng
+ * @author lianglele
  * @date 2018/8/13
  * 扩展OAuth2FeignRequestInterceptor
  */

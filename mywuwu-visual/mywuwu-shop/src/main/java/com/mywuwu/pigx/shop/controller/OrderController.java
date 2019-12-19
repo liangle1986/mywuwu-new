@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.common.log.annotation.SysLog;
 import com.mywuwu.pigx.shop.entity.Order;
+import com.mywuwu.pigx.shop.entity.dto.OrderTo;
 import com.mywuwu.pigx.shop.service.OrderService;
 import com.mywuwu.pigx.shop.vo.OrderVo;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -120,7 +121,7 @@ public class OrderController {
 	@ApiOperation(value = "下单", notes = "下单")
 	@SysLog("下单")
 	@PostMapping("/submit")
-	public R saveOrder(@RequestBody OrderVo order) {
+	public R saveOrder(@RequestBody OrderTo order) {
 		return orderService.saveUserOrderInfo(order);
 	}
 
@@ -132,6 +133,6 @@ public class OrderController {
 	@ApiOperation(value = "获取订单列表", notes = "获取订单列表")
 	@GetMapping("/list")
 	public R selectOrderList() {
-		return R.ok(orderService.se);
+		return orderService.selectOrderList();
 	}
 }

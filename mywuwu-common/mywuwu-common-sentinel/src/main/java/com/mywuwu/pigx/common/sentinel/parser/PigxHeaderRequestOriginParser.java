@@ -1,5 +1,5 @@
 /*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
+ *    Copyright (c) 2018-2025, lianglele All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -12,7 +12,7 @@
  * Neither the name of the ywuwu.com developer nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * Author: lengleng (lianglele1986@126.com)
+ * Author: lianglele (lianglele1986@126.com)
  */
 
 package com.mywuwu.pigx.common.sentinel.parser;
@@ -22,7 +22,7 @@ import com.alibaba.csp.sentinel.adapter.servlet.callback.RequestOriginParser;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author lengleng
+ * @author lianglele
  * @date 2019-10-11
  * <p>
  * sentinel 请求头解析判断

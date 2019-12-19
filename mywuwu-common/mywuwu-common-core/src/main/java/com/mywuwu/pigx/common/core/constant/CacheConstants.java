@@ -1,7 +1,7 @@
 package com.mywuwu.pigx.common.core.constant;
 
 /**
- * @author lengleng
+ * @author lianglele
  * @date 2019-04-28
  * <p>
  * 缓存的key 常量

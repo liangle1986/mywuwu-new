@@ -3,10 +3,16 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<!--<parent>-->
+		<!--<artifactId>pigx-cloud-dependencies-parent</artifactId>-->
+		<!--<groupId>com.pig4cloud</groupId>-->
+		<!--<version>Greenwich.RELEASE</version>-->
+		<!--<relativePath/>-->
+	<!--</parent>-->
 	<parent>
-		<artifactId>pigx-cloud-dependencies-parent</artifactId>
-		<groupId>com.pig4cloud</groupId>
-		<version>Greenwich.RELEASE</version>
+		<artifactId>spring-cloud-dependencies-parent</artifactId>
+		<groupId>org.springframework.cloud</groupId>
+		<version>2.1.5.RELEASE</version>
 		<relativePath/>
 	</parent>
 
@@ -146,22 +152,22 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<build>
-		<plugins>
-			<!--避免和parent bom坐标不一致 -->
-			<plugin>
-				<groupId>com.pig4cloud.plugin</groupId>
-				<artifactId>spring-cloud-maven-plugin</artifactId>
-				<version>1.0.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<!--<build>-->
+		<!--<plugins>-->
+			<!--&lt;!&ndash;避免和parent bom坐标不一致 &ndash;&gt;-->
+			<!--<plugin>-->
+				<!--<groupId>com.pig4cloud.plugin</groupId>-->
+				<!--<artifactId>spring-cloud-maven-plugin</artifactId>-->
+				<!--<version>1.0.0</version>-->
+				<!--<executions>-->
+					<!--<execution>-->
+						<!--<phase>package</phase>-->
+						<!--<goals>-->
+							<!--<goal>info</goal>-->
+						<!--</goals>-->
+					<!--</execution>-->
+				<!--</executions>-->
+			<!--</plugin>-->
+		<!--</plugins>-->
+	<!--</build>-->
 </project>
