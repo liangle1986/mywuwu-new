@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.AttributeCategory;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:24:22
  */
 public interface AttributeCategoryMapper extends BaseMapper<AttributeCategory> {

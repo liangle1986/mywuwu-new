@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.Cart;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-27 20:54:53
  */
 public interface CartMapper extends BaseMapper<Cart> {

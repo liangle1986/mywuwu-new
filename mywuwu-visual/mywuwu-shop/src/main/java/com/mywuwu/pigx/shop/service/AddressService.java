@@ -18,14 +18,24 @@
 package com.mywuwu.pigx.shop.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.Address;
 
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:24:02
  */
 public interface AddressService extends IService<Address> {
+
+/**
+  * @description: 添加修改地址
+  * @Param address地址信息
+  * @return:
+  * @author: lianglele
+  * @date: 2020-04-03 15:35
+  */
+	R saveOrUpdateAddress(Address address);
 
 }

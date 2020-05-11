@@ -44,5 +44,6 @@
 		<module>mywuwu-tx-manager</module>
 		<module>mywuwu-shop</module>
 		<module>mywuwu-gecco</module>
+		<module>mywuwu-proscenium</module>
 	</modules>
 </project>

@@ -21,13 +21,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:44
  */
 @Data
 @ApiModel(value = "")
-public class OrderTo {
+public class OrderDto {
 	private static final long serialVersionUID = 1L;
 
 
@@ -40,7 +42,7 @@ public class OrderTo {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private Integer goodsId;
+	private String goodsId;
 	/**
 	 *
 	 */
@@ -51,12 +53,17 @@ public class OrderTo {
 	 * 商品总价
 	 */
 	@ApiModelProperty(value = "商品总价")
-	private Double price;
+	private String price;
 
 	/**
 	 * 微信开放标
 	 */
 	@ApiModelProperty(value = "")
 	private String opentId;
+	/**
+	 * dizhi
+	 */
+	@ApiModelProperty(value = "")
+	private String addressId;
 
 }

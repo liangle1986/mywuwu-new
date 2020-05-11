@@ -17,13 +17,13 @@
 package com.mywuwu.pigx.shop.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.common.security.util.SecurityUtils;
-import com.mywuwu.pigx.shop.entity.Order;
-import com.mywuwu.pigx.shop.entity.OrderGoods;
-import com.mywuwu.pigx.shop.entity.dto.OrderTo;
+import com.mywuwu.pigx.shop.entity.*;
+import com.mywuwu.pigx.shop.entity.dto.OrderDto;
 import com.mywuwu.pigx.shop.mapper.OrderMapper;
 import com.mywuwu.pigx.shop.service.*;
 import com.mywuwu.pigx.shop.vo.OrderVo;
@@ -31,15 +31,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:44
  */
 @Slf4j
 @Service
-public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, ShopOrder> implements OrderService {
 
 	/**
 	 * 会员信息
@@ -62,6 +64,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	 */
 	@Autowired
 	private GoodsSpecificationService specificationService;
+	/**
+	 * gouwuche
+	 */
+	@Autowired
+	private CartService cartService;
+	/**
+	 * dizhi
+	 */
+	@Autowired
+	private AddressService addressService;
 
 	/**
 	 * 优惠券
@@ -85,7 +97,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 	public R selectOrderList() {
 		try {
 
-			List<Order> orderList = baseMapper.selectList(Wrappers.<Order>query().lambda().eq(Order::getUserId, SecurityUtils.getUser().getId()));
+			List<ShopOrder> orderList = baseMapper.selectList(Wrappers.<ShopOrder>query().lambda().eq(ShopOrder::getUserId, SecurityUtils.getUser().getId()));
 			List<OrderVo> orderVoList = null;
 			orderList.stream().forEach(o -> {
 				OrderVo vo = new OrderVo();
@@ -111,21 +123,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 
 	@Override
-	public R saveUserOrderInfo(OrderTo order) {
+	public R saveUserOrderInfo(OrderDto order) {
 
 		try {
 			//根据openid查询订单
-			if (baseMapper.selectCount(Wrappers.<Order>query().lambda().eq(Order::getUserId, order.getOpentId())) > 0) {
+			if (baseMapper.selectCount(Wrappers.<ShopOrder>query().lambda().eq(ShopOrder::getUserId, order.getOpentId())) > 0) {
 
-				Order newOrder = baseMapper.selectOne(Wrappers.<Order>query().lambda().eq(Order::getUserId, order.getOpentId()).last("limit 1"));
+				ShopOrder newOrder = baseMapper.selectOne(Wrappers.<ShopOrder>query().lambda().eq(ShopOrder::getUserId, order.getOpentId()).last("limit 1"));
 				newOrder.setUserId(order.getUserId());
-				newOrder.setGoodsPrice(order.getPrice());
+				newOrder.setGoodsIds(order.getGoodsId());
+				newOrder.setAllprice(order.getPrice());
 				baseMapper.updateById(newOrder);
 			} else {
-				Order newOrder = new Order();
+				ShopOrder newOrder = new ShopOrder();
 				newOrder.setUserId(order.getUserId());
-				newOrder.setGoodsPrice(order.getPrice());
-//				newOrder.set
+				newOrder.setAllprice(order.getPrice());
+//				newOrder.setGoodsId(order.getGoodsId());
 				baseMapper.insert(newOrder);
 			}
 			return R.ok("下单成功");
@@ -137,14 +150,29 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 	}
 
-	public R selectOrderDetail(Integer orderId) {
+	//huoqudingdan xiangqing
+	@Override
+	public R selectOrderDetail(OrderDto order) {
 
-		Order order = baseMapper.selectOne(Wrappers.<Order>query().lambda().eq(Order::getUserId, SecurityUtils.getUser().getId()).eq(Order::getId, orderId));
-		if (order == null) {
+		ShopOrder neworder = baseMapper.selectOne(Wrappers.<ShopOrder>query().lambda().eq(ShopOrder::getUserId, order.getUserId()));
+		if (neworder == null) {
 			return R.failed("订单不存在");
 		}
 //		order.setProvince(regionService.getById(order.getProvince()).getName());
-		return R.ok();
+		//根据用户 和商品标示查询购物车
+		List<Cart> carList = cartService.list(Wrappers.<Cart>query().lambda().eq(Cart::getUserId,order.getUserId()).in(Cart::getGoodsId, neworder.getGoodsIds().split(",")));
+		List<Address> addressList;
+		//huoqudizshifouweikong
+		if(StringUtils.isNotEmpty(order.getAddressId())){
+			addressList = addressService.list(Wrappers.<Address>query().lambda().eq(Address::getUserId, order.getUserId()).eq(Address::getId,order.getAddressId()).orderByDesc(Address::getIsDefault));
+		}else{
+			addressList = addressService.list(Wrappers.<Address>query().lambda().eq(Address::getUserId, order.getUserId()).orderByDesc(Address::getIsDefault));
+		}
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("allPrise", neworder.getAllprice());
+		resultMap.put("goodsList", carList);
+		resultMap.put("address", addressList);
+		return R.ok(resultMap);
 	}
 
 }

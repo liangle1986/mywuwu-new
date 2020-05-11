@@ -48,7 +48,7 @@
 		</trim>
 	</select>
 	<!--评论信息-->
-	<select id="selectCommentList" resultType="com.mywuwu.pigx.shop.vo.Comment">
+	<select id="selectCommentList" resultType="com.mywuwu.pigx.shop.entity.Comment">
 
 		select c.id, c.type_id , c.content, c.add_time, c.status, c.user_id from `nideshop_comment` c
 		right join `nideshop_comment_picture` p on c.id = p.comment_id

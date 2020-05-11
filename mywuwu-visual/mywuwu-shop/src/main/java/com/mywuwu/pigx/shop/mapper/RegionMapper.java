@@ -24,7 +24,7 @@ import com.mywuwu.pigx.shop.entity.Region;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:44
  */
 public interface RegionMapper extends BaseMapper<Region> {

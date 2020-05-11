@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.HelpType;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:21:15
  */
 public interface HelpTypeMapper extends BaseMapper<HelpType> {

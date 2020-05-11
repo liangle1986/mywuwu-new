@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.Address;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:24:02
  */
 public interface AddressMapper extends BaseMapper<Address> {

@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
 /**
  * 
  *商品对应规格表值表实体
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:50
  */
 @Data

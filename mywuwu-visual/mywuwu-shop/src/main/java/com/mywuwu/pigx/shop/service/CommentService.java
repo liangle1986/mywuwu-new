@@ -24,7 +24,7 @@ import com.mywuwu.pigx.shop.entity.Comment;
 import com.mywuwu.pigx.shop.entity.dto.CommentDto;
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:24:07
  */
 public interface CommentService extends IService<Comment> {

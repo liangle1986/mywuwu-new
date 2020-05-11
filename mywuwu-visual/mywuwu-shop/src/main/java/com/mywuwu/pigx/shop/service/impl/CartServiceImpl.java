@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-27 20:54:53
  */
 @Service
@@ -69,10 +69,10 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 
 				cartList.stream().forEach(c -> {
 					goodsCount.addAndGet(c.getNumber());
-					goodsAmount.updateAndGet(v -> v + c.getNumber() * c.getRetailPrice());
+					goodsAmount.updateAndGet(v -> v + c.getNumber() * c.getRetailPrice().intValue());
 					if (c.getChecked() != null && c.getChecked() > 0) {
 						checkedGoodsCount.addAndGet(c.getNumber());
-						checkedGoodsAmount.updateAndGet(v -> v + c.getNumber() * c.getRetailPrice());
+						checkedGoodsAmount.updateAndGet(v -> v + c.getNumber() * c.getRetailPrice().intValue());
 					}
 
 					// 查找商品的图片
@@ -98,40 +98,41 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 			return R.failed(400, "商品已下架");
 		}
 
-		// 取得规格的信息,判断规格库存
-		Product productInfo = productService.getOne(Wrappers.<Product>query().lambda().eq(Product::getGoodsId, goods.getId()).eq(Product::getId, cart.getProductId()));
-		if (productInfo == null || productInfo.getGoodsNumber() < cart.getNumber()) {
-			return R.failed(400, "库存不足");
-		}
+//		// 取得规格的信息,判断规格库存
+//		Product productInfo = productService.getOne(Wrappers.<Product>query().lambda().eq(Product::getGoodsId, goods.getId()).eq(Product::getId, cart.getProductId()));
+//		if (productInfo == null || productInfo.getGoodsNumber() < cart.getNumber()) {
+//			return R.failed(400, "库存不足");
+//		}
 
 		// 判断购物车中是否存在此规格商品
-		Cart cartInfo = baseMapper.selectOne(Wrappers.<Cart>query().lambda().eq(Cart::getGoodsId, goods.getId()).eq(Cart::getProductId, productInfo.getId()));
+		Cart cartInfo = baseMapper.selectOne(Wrappers.<Cart>query().lambda().eq(Cart::getGoodsId, goods.getId()));
+//				.eq(Cart::getProductId, productInfo.getId()));
 		if (cartInfo == null) {
 			// 添加操作
 
-			// 添加规格名和值
-			List<String> goodsSepcifitionValue = null;
-			if (!StrUtil.isEmpty(productInfo.getGoodsSpecificationIds())) {
-
-				List<GoodsSpecificationEntity> goodsSpecif = goodsSpecificationService.list(Wrappers.<GoodsSpecificationEntity>query().lambda().in(GoodsSpecificationEntity::getGoodsId, Arrays.asList(productInfo.getGoodsSpecificationIds().split("_"))));
-				goodsSepcifitionValue = goodsSpecif.stream().map(g -> g.getValue()).collect(Collectors.toList());
-
-			}
+//			// 添加规格名和值
+//			List<String> goodsSepcifitionValue = null;
+//			if (!StrUtil.isEmpty(productInfo.getGoodsSpecificationIds())) {
+//
+//				List<GoodsSpecificationEntity> goodsSpecif = goodsSpecificationService.list(Wrappers.<GoodsSpecificationEntity>query().lambda().in(GoodsSpecificationEntity::getGoodsId, Arrays.asList(productInfo.getGoodsSpecificationIds().split("_"))));
+//				goodsSepcifitionValue = goodsSpecif.stream().map(g -> g.getValue()).collect(Collectors.toList());
+//
+//			}
 			// 添加到购物车
-			cart.setGoodsSn(productInfo.getGoodsSn());
+			cart.setGoodsSn(goods.getGoodsSn());
 			cart.setGoodsName(goods.getName());
 			cart.setListPicUrl(goods.getListPicUrl());
 			cart.setSessionId("1");
 			cart.setUserId(SecurityUtils.getUser().getId());
-			cart.setRetailPrice(productInfo.getRetailPrice());
-			cart.setMarketPrice(productInfo.getRetailPrice());
-			cart.setGoodsSpecifitionNameValue(goodsSepcifitionValue.stream().collect(Collectors.joining(";")));
-			cart.setGoodsSpecifitionIds(productInfo.getGoodsSpecificationIds());
+			cart.setRetailPrice(goods.getRetailPrice());
+			cart.setMarketPrice(goods.getRetailPrice());
+//			cart.setGoodsSpecifitionNameValue(goodsSepcifitionValue.stream().collect(Collectors.joining(";")));
+//			cart.setGoodsSpecifitionIds(productInfo.getGoodsSpecificationIds());
 			cart.setChecked(1);
 			baseMapper.insert(cart);
 		} else {
 			// 如果已经存在购物车中，则数量增加
-			if (productInfo.getGoodsNumber() < (cart.getNumber() + cartInfo.getNumber())) {
+			if (goods.getGoodsNumber() < (cart.getNumber() + cartInfo.getNumber())) {
 				return R.failed(400, "库存不足");
 			}
 			cartInfo.setNumber(cart.getNumber() + cartInfo.getNumber());
@@ -141,66 +142,66 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 		return this.selectCartList();
 	}
 
-	@Override
-	public R updateCartGoods(Cart cart) {
-		// 判断商品是否可以购买
-		Goods goods = goodsService.getById(cart.getGoodsId());
-		if (goods == null || goods.getIsDelete() == 1) {
-			return R.failed(400, "商品已下架");
-		}
-
-		// 取得规格的信息,判断规格库存
-		Product productInfo = productService.getOne(Wrappers.<Product>query().lambda().eq(Product::getGoodsId, goods.getId()).eq(Product::getId, cart.getProductId()));
-		if (productInfo == null || productInfo.getGoodsNumber() < cart.getNumber()) {
-			return R.failed(400, "库存不足");
-		}
-
-		// 判断购物车中是否存在此规格商品
-		Cart cartInfo = baseMapper.selectOne(Wrappers.<Cart>query().lambda().eq(Cart::getGoodsId, goods.getId()).eq(Cart::getProductId, productInfo.getId()));
-		if (cartInfo == null) {
-			// 只是更新number
-			if (cartInfo.getProductId() == cart.getProductId()) {
-				cartInfo.setNumber(cart.getNumber());
-				baseMapper.updateById(cartInfo);
-				return this.selectCartList();
-			}
-		}
-		Cart newCartInfo = baseMapper.selectOne(Wrappers.<Cart>query().lambda().eq(Cart::getGoodsId, goods.getId()).eq(Cart::getProductId, productInfo.getId()));
-		if (newCartInfo == null) {
-			// 添加操作
-
-			// 添加规格名和值
-			List<String> goodsSepcifitionValue = null;
-			if (!StrUtil.isEmpty(productInfo.getGoodsSpecificationIds())) {
-
-				List<GoodsSpecificationEntity> goodsSpecif = goodsSpecificationService.list(Wrappers.<GoodsSpecificationEntity>query().lambda().in(GoodsSpecificationEntity::getGoodsId, Arrays.asList(productInfo.getGoodsSpecificationIds().split("_"))));
-				goodsSepcifitionValue = goodsSpecif.stream().map(g -> g.getValue()).collect(Collectors.toList());
-
-
-			}
-			// 添加到购物车
-			cart.setGoodsSn(productInfo.getGoodsSn());
-			cart.setGoodsName(goods.getName());
-			cart.setListPicUrl(goods.getListPicUrl());
-			cart.setSessionId("1");
-			cart.setUserId(SecurityUtils.getUser().getId());
-			cart.setRetailPrice(productInfo.getRetailPrice());
-			cart.setMarketPrice(productInfo.getRetailPrice());
-			cart.setGoodsSpecifitionNameValue(goodsSepcifitionValue.stream().collect(Collectors.joining(";")));
-			cart.setGoodsSpecifitionIds(productInfo.getGoodsSpecificationIds());
-			cart.setChecked(1);
-			baseMapper.insert(cart);
-		} else {
-			// 如果已经存在购物车中，则数量增加
-			if (productInfo.getGoodsNumber() < (cart.getNumber() + cartInfo.getNumber())) {
-				return R.failed(400, "库存不足");
-			}
-			cartInfo.setNumber(cart.getNumber() + cartInfo.getNumber());
-			baseMapper.updateById(cartInfo);
-
-		}
-		return this.selectCartList();
-	}
+//	@Override
+//	public R updateCartGoods(Cart cart) {
+//		// 判断商品是否可以购买
+//		Goods goods = goodsService.getById(cart.getGoodsId());
+//		if (goods == null || goods.getIsDelete() == 1) {
+//			return R.failed(400, "商品已下架");
+//		}
+//
+//		// 取得规格的信息,判断规格库存
+//		Product productInfo = productService.getOne(Wrappers.<Product>query().lambda().eq(Product::getGoodsId, goods.getId()).eq(Product::getId, cart.getProductId()));
+//		if (productInfo == null || productInfo.getGoodsNumber() < cart.getNumber()) {
+//			return R.failed(400, "库存不足");
+//		}
+//
+//		// 判断购物车中是否存在此规格商品
+//		Cart cartInfo = baseMapper.selectOne(Wrappers.<Cart>query().lambda().eq(Cart::getGoodsId, goods.getId()).eq(Cart::getProductId, productInfo.getId()));
+//		if (cartInfo == null) {
+//			// 只是更新number
+//			if (cartInfo.getProductId() == cart.getProductId()) {
+//				cartInfo.setNumber(cart.getNumber());
+//				baseMapper.updateById(cartInfo);
+//				return this.selectCartList();
+//			}
+//		}
+//		Cart newCartInfo = baseMapper.selectOne(Wrappers.<Cart>query().lambda().eq(Cart::getGoodsId, goods.getId()).eq(Cart::getProductId, productInfo.getId()));
+//		if (newCartInfo == null) {
+//			// 添加操作
+//
+//			// 添加规格名和值
+//			List<String> goodsSepcifitionValue = null;
+//			if (!StrUtil.isEmpty(productInfo.getGoodsSpecificationIds())) {
+//
+//				List<GoodsSpecificationEntity> goodsSpecif = goodsSpecificationService.list(Wrappers.<GoodsSpecificationEntity>query().lambda().in(GoodsSpecificationEntity::getGoodsId, Arrays.asList(productInfo.getGoodsSpecificationIds().split("_"))));
+//				goodsSepcifitionValue = goodsSpecif.stream().map(g -> g.getValue()).collect(Collectors.toList());
+//
+//
+//			}
+//			// 添加到购物车
+//			cart.setGoodsSn(productInfo.getGoodsSn());
+//			cart.setGoodsName(goods.getName());
+//			cart.setListPicUrl(goods.getListPicUrl());
+//			cart.setSessionId("1");
+//			cart.setUserId(SecurityUtils.getUser().getId());
+//			cart.setRetailPrice(productInfo.getRetailPrice());
+//			cart.setMarketPrice(productInfo.getRetailPrice());
+//			cart.setGoodsSpecifitionNameValue(goodsSepcifitionValue.stream().collect(Collectors.joining(";")));
+//			cart.setGoodsSpecifitionIds(productInfo.getGoodsSpecificationIds());
+//			cart.setChecked(1);
+//			baseMapper.insert(cart);
+//		} else {
+//			// 如果已经存在购物车中，则数量增加
+//			if (productInfo.getGoodsNumber() < (cart.getNumber() + cartInfo.getNumber())) {
+//				return R.failed(400, "库存不足");
+//			}
+//			cartInfo.setNumber(cart.getNumber() + cartInfo.getNumber());
+//			baseMapper.updateById(cartInfo);
+//
+//		}
+//		return this.selectCartList();
+//	}
 
 
 	/**

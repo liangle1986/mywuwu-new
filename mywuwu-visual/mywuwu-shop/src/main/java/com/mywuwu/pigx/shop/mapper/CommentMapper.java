@@ -27,7 +27,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:24:07
  */
 public interface CommentMapper extends BaseMapper<Comment> {

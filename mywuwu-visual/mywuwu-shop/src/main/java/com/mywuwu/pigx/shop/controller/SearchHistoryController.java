@@ -26,6 +26,7 @@ import com.mywuwu.pigx.common.security.service.PigxUser;
 import com.mywuwu.pigx.common.security.util.SecurityUtils;
 import com.mywuwu.pigx.shop.entity.Keywords;
 import com.mywuwu.pigx.shop.entity.SearchHistory;
+import com.mywuwu.pigx.shop.entity.dto.SearchDto;
 import com.mywuwu.pigx.shop.service.KeywordsService;
 import com.mywuwu.pigx.shop.service.SearchHistoryService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +42,7 @@ import java.util.Map;
 
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:05
  */
 @RestController
@@ -128,30 +129,9 @@ public class SearchHistoryController {
 	 */
 	@ApiOperation(value = "查询", notes = "搜索")
 	@GetMapping("/index")
-	public R index(String opentId) {
+	public R index(@RequestBody SearchDto searchDto) {
 
-		Map<String, Object> resultObj = new HashMap();
-		//获取用户嘻嘻
-//		PigxUser user = SecurityUtils.getUser();
-		Page page = new Page();
-		page.setSize(1);
-		List<Keywords> keywordsEntityList = keywordsService.list(Wrappers.<Keywords>query().orderByAsc("id").lambda().eq(Keywords::getIsDefault, 1).last("limit 1"));
-
-		//取一个
-		Keywords keywords = keywordsEntityList != null && keywordsEntityList.size() > 0 ? keywordsEntityList.get(0) : null;
-
-		//取出热闹关键词
-		List<Keywords> hotKeywordList = keywordsService.list(Wrappers.<Keywords>query().select("keyword,max(is_hot)").lambda().groupBy(Keywords::getKeyword).last("limit 10"));
-
-		page = new Page();
-		SearchHistory search = new SearchHistory();
-		search.setUserId(opentId);
-		IPage<SearchHistory> historyPage = searchHistoryService.page(page, Wrappers.<SearchHistory>query(search).orderByAsc("id"));
-
-		resultObj.put("hotKeywordList", hotKeywordList);
-		resultObj.put("defaultKeyword", keywords);
-		resultObj.put("historyData", historyPage != null && historyPage.getRecords() != null && historyPage.getRecords().size() > 0 ? historyPage.getRecords() : null);
-		return R.ok(resultObj);
+		return searchHistoryService.selectSearchInfo(searchDto);
 	}
 
 
@@ -159,13 +139,9 @@ public class SearchHistoryController {
 	 * 　　helper
 	 */
 	@ApiOperation(value = "搜索商品")
-	@GetMapping("helper")
-	public Object helper(String keyword) {
-		Keywords keywords = new Keywords();
-		keywords.setKeyword(keyword);
-		Page page = new Page<>();
-		IPage<Keywords> keywordsList = keywordsService.page(page, Wrappers.query(keywords));
-		return R.ok(keywordsList != null ? keywordsList.getRecords() : null);
+	@GetMapping("/helper")
+	public Object helper(@RequestBody SearchDto searchDto)  {
+		return searchHistoryService.selectHelperList(searchDto);
 	}
 
 	/**

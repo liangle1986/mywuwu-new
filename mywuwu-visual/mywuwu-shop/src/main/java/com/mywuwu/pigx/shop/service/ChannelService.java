@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.Channel;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:23:42
  */
 public interface ChannelService extends IService<Channel> {

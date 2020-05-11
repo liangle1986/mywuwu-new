@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("shop_order")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "")
+@ApiModel(value = "order")
 public class Order extends Model<Order> {
 	private static final long serialVersionUID = 1L;
 
@@ -155,12 +155,12 @@ public class Order extends Model<Order> {
 	 * 订单总价
 	 */
 	@ApiModelProperty(value = "订单总价")
-	private Data orderPrice;
+	private BigDecimal orderPrice;
 	/**
 	 * 商品总价
 	 */
 	@ApiModelProperty(value = "商品总价")
-	private Double goodsPrice;
+	private BigDecimal sgoodsPrice;
 	/**
 	 *
 	 */
@@ -180,7 +180,7 @@ public class Order extends Model<Order> {
 	 * 配送费用
 	 */
 	@ApiModelProperty(value = "配送费用")
-	private Integer freightPrice;
+	private BigDecimal freightPrice;
 	/**
 	 * 使用的优惠券id
 	 */
@@ -195,7 +195,7 @@ public class Order extends Model<Order> {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private Double couponPrice;
+	private BigDecimal couponPrice;
 	/**
 	 *
 	 */
@@ -210,10 +210,17 @@ public class Order extends Model<Order> {
 	 *
 	 */
 	@ApiModelProperty(value = "")
-	private Double fullCutPrice;
+	private BigDecimal fullCutPrice;
 	/**
 	 *
 	 */
 	@ApiModelProperty(value = "")
 	private String orderType;
+	/**
+	 *shangpbiaoshi
+	 */
+	@ApiModelProperty(value = "")
+	private String goodsIds;
+
+
 }

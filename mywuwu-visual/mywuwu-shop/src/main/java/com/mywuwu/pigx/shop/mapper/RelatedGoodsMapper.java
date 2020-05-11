@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.RelatedGoods;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:21:45
  */
 public interface RelatedGoodsMapper extends BaseMapper<RelatedGoods> {

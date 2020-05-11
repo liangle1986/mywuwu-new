@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:24:02
  */
 @RestController
@@ -72,15 +72,15 @@ public class AddressController {
 	/**
 	 * 新增
 	 *
-	 * @param nideshopAddress
+	 * @param address
 	 * @return R
 	 */
 	@ApiOperation(value = "新增", notes = "新增")
 	@SysLog("新增")
-	@PostMapping
+	@PostMapping("/save")
 //	@PreAuthorize("@pms.hasPermission('nideshopaddress_add')")
-	public R save(@RequestBody Address nideshopAddress) {
-		return R.ok(addressService.save(nideshopAddress));
+	public R save(@RequestBody Address address) {
+		return addressService.saveOrUpdateAddress(address);
 	}
 
 	/**
@@ -118,9 +118,9 @@ public class AddressController {
 	 * @return
 	 */
 	@ApiOperation(value = "查询地址", notes = "查询地址")
-	@GetMapping("/list")
-	public R list() {
-		return R.ok(addressService.list(Wrappers.<Address>query().lambda().eq(Address::getUserId, SecurityUtils.getUser().getId())));
+	@GetMapping("/list/{openId}")
+	public R list(@PathVariable String openId) {
+		return R.ok(addressService.list(Wrappers.<Address>query().lambda().eq(Address::getUserId, openId).orderByDesc(Address::getIsDefault)));
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class AddressController {
 	@ApiOperation(value = "查询详情", notes = "查询详情")
 	@GetMapping("/detail/{id}")
 	public R detail(@PathVariable Integer id) {
-		return R.ok(addressService.getOne(Wrappers.<Address>query().lambda().eq(Address::getUserId, SecurityUtils.getUser().getId()).eq(Address::getId, id)));
+		return R.ok(addressService.getOne(Wrappers.<Address>query().lambda().eq(Address::getId, id)));
 	}
 
 }

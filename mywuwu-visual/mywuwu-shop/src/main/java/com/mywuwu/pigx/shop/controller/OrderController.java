@@ -22,9 +22,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.common.log.annotation.SysLog;
 import com.mywuwu.pigx.shop.entity.Order;
-import com.mywuwu.pigx.shop.entity.dto.OrderTo;
+import com.mywuwu.pigx.shop.entity.ShopOrder;
+import com.mywuwu.pigx.shop.entity.dto.OrderDto;
 import com.mywuwu.pigx.shop.service.OrderService;
-import com.mywuwu.pigx.shop.vo.OrderVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:44
  */
 @RestController
@@ -53,7 +53,7 @@ public class OrderController {
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page")
-	public R getNideshopOrderPage(Page page, Order order) {
+	public R getNideshopOrderPage(Page page, ShopOrder order) {
 		return R.ok(orderService.page(page, Wrappers.query(order)));
 	}
 
@@ -80,7 +80,7 @@ public class OrderController {
 	@SysLog("新增")
 	@PostMapping
 	@PreAuthorize("@pms.hasPermission('nideshoporder_add')")
-	public R save(@RequestBody Order order) {
+	public R save(@RequestBody ShopOrder order) {
 		return R.ok(orderService.save(order));
 	}
 
@@ -94,7 +94,7 @@ public class OrderController {
 	@SysLog("修改")
 	@PutMapping
 	@PreAuthorize("@pms.hasPermission('nideshoporder_edit')")
-	public R updateById(@RequestBody Order order) {
+	public R updateById(@RequestBody ShopOrder order) {
 		return R.ok(orderService.updateById(order));
 	}
 
@@ -121,7 +121,7 @@ public class OrderController {
 	@ApiOperation(value = "下单", notes = "下单")
 	@SysLog("下单")
 	@PostMapping("/submit")
-	public R saveOrder(@RequestBody OrderTo order) {
+	public R saveOrder(@RequestBody OrderDto order) {
 		return orderService.saveUserOrderInfo(order);
 	}
 
@@ -134,5 +134,15 @@ public class OrderController {
 	@GetMapping("/list")
 	public R selectOrderList() {
 		return orderService.selectOrderList();
+	}
+	/**
+	 * 获取订单xiangqing
+	 *
+	 * @return R
+	 */
+	@ApiOperation(value = "获取订单xiangqing", notes = "获取订单xiangqing")
+	@GetMapping("/listDetail")
+	public R selectOrderDetail(@RequestBody OrderDto order) {
+		return orderService.selectOrderDetail(order);
 	}
 }

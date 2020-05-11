@@ -18,14 +18,14 @@
 package com.mywuwu.pigx.shop.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mywuwu.pigx.shop.entity.Order;
+import com.mywuwu.pigx.shop.entity.ShopOrder;
 
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:44
  */
-public interface OrderMapper extends BaseMapper<Order> {
+public interface OrderMapper extends BaseMapper<ShopOrder> {
 
 }

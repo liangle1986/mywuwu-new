@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 热闹关键词表
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:28
  */
 @RestController

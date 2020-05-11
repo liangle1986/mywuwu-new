@@ -22,29 +22,19 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.common.log.annotation.SysLog;
-import com.mywuwu.pigx.common.security.service.PigxUser;
 import com.mywuwu.pigx.common.security.util.SecurityUtils;
 import com.mywuwu.pigx.shop.entity.Cart;
-import com.mywuwu.pigx.shop.entity.Goods;
 import com.mywuwu.pigx.shop.service.CartService;
-import com.mywuwu.pigx.shop.service.GoodsService;
-import io.swagger.models.auth.In;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
- * @author pigx code generator
+ * @author  code generator
  * @date 2019-08-27 20:54:53
  */
 @RestController
@@ -156,13 +146,13 @@ public class CartController {
 	 * @param cart
 	 * @return R
 	 */
-	@ApiOperation(value = "小程序购物车修改", notes = "小程序购物车修改")
-	@SysLog("小程序购物车修改")
-	@PostMapping("/add")
-	public R updateCart(@RequestBody Cart cart) {
-
-		return cartService.updateCartGoods(cart);
-	}
+//	@ApiOperation(value = "小程序购物车修改", notes = "小程序购物车修改")
+//	@SysLog("小程序购物车修改")
+//	@PostMapping("/update")
+//	public R updateCart(@RequestBody Cart cart) {
+//
+//		return cartService.updateCartGoods(cart);
+//	}
 
 	/**
 	 * 是否选择商品，如果已经选择，则取消选择，批量操作

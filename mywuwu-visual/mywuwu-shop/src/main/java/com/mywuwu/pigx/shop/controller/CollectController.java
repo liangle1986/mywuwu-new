@@ -124,7 +124,7 @@ public class CollectController {
 	@ApiOperation(value = " 查询收藏夹商品", notes = " 查询收藏夹商品")
 	@GetMapping("/index")
 	public R getById(Collect collect) {
-		return collectService.selectCollectList(collect);
+		return collectService.selectCollectGoods(collect);
 	}
 
 
@@ -139,7 +139,7 @@ public class CollectController {
 	@PostMapping("addordelete")
 	public R addordelete(@RequestBody Collect collect) {
 
-		collect.setUserId(SecurityUtils.getUser().getId());
+//		collect.setUserId(SecurityUtils.getUser().getId());
 		Collect showCollect = collectService.getOne(Wrappers.query(collect));
 		//取消
 		if (showCollect != null) {

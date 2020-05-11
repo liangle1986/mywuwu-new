@@ -19,21 +19,21 @@ package com.mywuwu.pigx.shop.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mywuwu.pigx.common.core.util.R;
-import com.mywuwu.pigx.shop.entity.Order;
-import com.mywuwu.pigx.shop.entity.dto.OrderTo;
+import com.mywuwu.pigx.shop.entity.ShopOrder;
+import com.mywuwu.pigx.shop.entity.dto.OrderDto;
 
 /**
  * @author lianglele
  * @date 2019-08-26 22:22:44
  */
-public interface OrderService extends IService<Order> {
+public interface OrderService extends IService<ShopOrder> {
 	/**
 	 * 创建订单
 	 *
 	 * @param order 订单信息
 	 * @return
 	 */
-	R saveUserOrderInfo(OrderTo order);
+	R saveUserOrderInfo(OrderDto order);
 
 	/**
 	 * @description: 获取用户订单
@@ -42,4 +42,12 @@ public interface OrderService extends IService<Order> {
 	 * @date: 2019-12-14 18:46
 	 */
 	R selectOrderList();
+	/**
+	  * @description:
+	  * @Param ordera
+	  * @return:
+	  * @author: lianglele
+	  * @date: 2020-04-02 14:24
+	  */
+	R selectOrderDetail(OrderDto order);
 }

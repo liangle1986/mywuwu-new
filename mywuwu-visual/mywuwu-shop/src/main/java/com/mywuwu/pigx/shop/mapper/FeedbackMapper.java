@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.Feedback;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:23:28
  */
 public interface FeedbackMapper extends BaseMapper<Feedback> {

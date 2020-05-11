@@ -27,5 +27,20 @@ import com.mywuwu.pigx.shop.entity.Collect;
  */
 public interface CollectService extends IService<Collect> {
 
+	/**
+	  * @description:
+	  * @Param null
+	  * @return:
+	  * @author: lianglele
+	  * @date: 2020-04-03 14:47
+	  */
 	R selectCollectList(Collect collect);
+	/**
+	  * @description: huiq
+	  * @Param null
+	  * @return:
+	  * @author: lianglele
+	  * @date: 2020-04-03 13:35
+	  */
+	R selectCollectGoods(Collect collect);
 }

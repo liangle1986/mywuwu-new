@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.Ad;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:23:37
  */
 public interface AdMapper extends BaseMapper<Ad> {

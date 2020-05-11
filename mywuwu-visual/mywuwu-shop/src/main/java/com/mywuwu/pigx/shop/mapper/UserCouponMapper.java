@@ -23,7 +23,7 @@ import com.mywuwu.pigx.shop.entity.UserCoupon;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:21:57
  */
 public interface UserCouponMapper extends BaseMapper<UserCoupon> {

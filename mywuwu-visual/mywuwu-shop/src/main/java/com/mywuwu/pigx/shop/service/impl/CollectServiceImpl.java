@@ -16,23 +16,49 @@
  */
 package com.mywuwu.pigx.shop.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.Collect;
+import com.mywuwu.pigx.shop.entity.Goods;
 import com.mywuwu.pigx.shop.mapper.CollectMapper;
 import com.mywuwu.pigx.shop.service.CollectService;
+import com.mywuwu.pigx.shop.service.GoodsService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:23:55
  */
 @Service
+@AllArgsConstructor
 public class CollectServiceImpl extends ServiceImpl<CollectMapper, Collect> implements CollectService {
 
+	private final GoodsService goodsService;
 
 	@Override
 	public R selectCollectList(Collect collect) {
 		return R.ok(baseMapper.selectCollectList(collect));
+	}
+
+	@Override
+	public R selectCollectGoods(Collect collect){
+		Map<String, Object> resultMap = new HashMap<>();
+
+		List<Integer> goodsIds = new ArrayList<>();
+		if(this.count(Wrappers.<Collect>query().lambda().eq(Collect::getUserId,collect.getUserId()))> 0){
+
+			goodsIds =  this.list(Wrappers.<Collect>query().lambda().eq(Collect::getUserId,collect.getUserId())).stream().map(Collect::getValueId).collect(Collectors.toList());
+
+			resultMap.put("collectGoodsList", goodsService.list(Wrappers.<Goods>query().lambda().in(Goods::getId, goodsIds)));
+		}
+		return R.ok(resultMap);
 	}
 }

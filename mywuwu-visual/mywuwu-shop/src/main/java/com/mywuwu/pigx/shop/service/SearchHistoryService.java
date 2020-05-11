@@ -18,14 +18,33 @@
 package com.mywuwu.pigx.shop.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mywuwu.pigx.common.core.util.R;
 import com.mywuwu.pigx.shop.entity.SearchHistory;
+import com.mywuwu.pigx.shop.entity.dto.SearchDto;
 
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:22:05
  */
 public interface SearchHistoryService extends IService<SearchHistory> {
 
+	/**
+	  * @description: 查询搜索记录
+	  * @Param searchDto
+	  * @return:
+	  * @author: lianglele
+	  * @date: 2020-04-03 10:30
+	  */
+	R selectSearchInfo(SearchDto searchDto);
+
+	/**
+	  * @description:
+	  * @Param null
+	  * @return: 
+	  * @author: lianglele
+	  * @date: 2020-04-03 10:38
+	  */
+	R selectHelperList(SearchDto searchDto);
 }

@@ -50,7 +50,7 @@ public interface CartService extends IService<Cart> {
 	 * @param cart 修改商品到信息
 	 * @return
 	 */
-	R updateCartGoods(Cart cart);
+//	R updateCartGoods(Cart cart);
 
 	/**
 	 * 提交前验证订单

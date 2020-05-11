@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 /**
  * 
  *
- * @author pigx code generator
+ * @author lianglele
  * @date 2019-08-26 22:23:06
  */
 @Data
@@ -69,10 +69,10 @@ private static final long serialVersionUID = 1L;
      * 零售价格
      */
     @ApiModelProperty(value="零售价格")
-    private Double retailPrice;
+    private BigDecimal retailPrice;
     /**
      * 价格
      */
     @ApiModelProperty(value="价格")
-    private Double marketPrice;
+    private BigDecimal marketPrice;
     }
